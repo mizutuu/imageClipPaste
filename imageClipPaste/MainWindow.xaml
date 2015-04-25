@@ -1,0 +1,13 @@
+﻿<Window x:Class="imageClipPaste.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="350" Width="596.04">
+    <Grid>
+        <ToggleButton Content="watch Clipboard On/Off" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="160" Height="55" Click="Button_Click"/>
+        <Image Name="capturedImage" HorizontalAlignment="Left" Height="Auto" Margin="10,80,0,0" VerticalAlignment="Top" Width="Auto"/>
+        <Label Name="log" Content="Log" HorizontalAlignment="Left" Margin="175,10,0,0" VerticalAlignment="Top" Height="55" Width="333"/>
+        <Button Content="Button" HorizontalAlignment="Left" Margin="515,10,0,0" VerticalAlignment="Top" Width="65" Height="24" Click="Button_Click_1"/>
+        <Image Name="image" HorizontalAlignment="Left" Height="221" Margin="10,80,0,0" VerticalAlignment="Top" Width="220"/>
+
+    </Grid>
+</Window>
