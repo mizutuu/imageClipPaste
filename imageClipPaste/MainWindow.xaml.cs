@@ -1,5 +1,6 @@
 ﻿using imageClipPaste.Interfaces;
 using imageClipPaste.Services;
+using MahApps.Metro.Controls;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -21,7 +22,7 @@ namespace imageClipPaste
     /// <summary>
     /// MainWindow.xaml の相互作用ロジック
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : MetroWindow
     {
         private string path = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "image.png");
         public MainWindow()
@@ -35,10 +36,12 @@ namespace imageClipPaste
         void watcher_CapturedNewerImage(object sender, CapturedNewerImageEventArgs e)
         {
             //putLog("event Fire!!!");
+            /*
             image.Dispatcher.Invoke(() =>
             {
                 image.Source = e.newImage;
             });
+            */
         }
 
         private ClipboardImageWatchService watcher = new ClipboardImageWatchService();
@@ -52,11 +55,6 @@ namespace imageClipPaste
             {
                 watcher.Start();
             }
-        }
-
-        void putLog (string message)
-        {
-            this.log.Content = DateTime.Now + ": "+ message + "\n" + this.log.Content;
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
@@ -78,7 +76,7 @@ namespace imageClipPaste
                 {
                     using (var activeCell = activeSheet.Cells)
                     {
-                        putLog("left:" + activeCell.Left + ", top:" + activeCell.Top);
+                        //putLog("left:" + activeCell.Left + ", top:" + activeCell.Top);
                     }
                     
                     float left = 0,
