@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -13,6 +14,9 @@ namespace imageClipPaste
     /// </summary>
     public partial class App : Application
     {
+        /// <summary>NLog</summary>
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             // 未処理例外を捕捉する、イベントハンドラを登録します。
@@ -55,10 +59,11 @@ namespace imageClipPaste
         private void ReportException(Exception e)
         {
             // ログに出力します。
+            logger.Error(e);
 
             // ユーザにエラーを通知します。
-            MessageBox.Show("致命的な問題が発生しました。" + Environment.NewLine + Environment.NewLine +
-                "（" + e.Message + "）", "title",
+            MessageBox.Show("致命的な問題が発生しました。" + Environment.NewLine +
+                "（" + e.Message + "）", AppDomain.CurrentDomain.FriendlyName,
                 MessageBoxButton.OK,
                 MessageBoxImage.Error);
         }
