@@ -5,7 +5,20 @@
     xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
     Title="imageClipPaste" Height="142.2" Width="352"
     BorderBrush="{DynamicResource AccentColorBrush}"
-    BorderThickness="1" ResizeMode="CanMinimize">
+    BorderThickness="1" ResizeMode="CanMinimize"
+    DataContext="{Binding Main, Source={StaticResource Locator}}">
+    
+    <Controls:MetroWindow.Resources>
+
+        <Style TargetType="{x:Type Rectangle}">
+            <Setter Property="Fill" Value="{Binding ElementName=monitorButton, Path=Foreground}" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsEnableMonitor}" Value="True">
+                    <Setter Property="Fill" Value="{StaticResource AccentColorBrush}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </Controls:MetroWindow.Resources>
 
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
@@ -27,7 +40,9 @@
     </Controls:MetroWindow.RightWindowCommands>
 
     <Grid>
-        <Button HorizontalAlignment="Left" Margin="20,20,0,0" VerticalAlignment="Top" Width="220" Height="70" Click="Button_Click">
+        <Button Name="monitorButton" 
+                HorizontalAlignment="Left" Margin="20,20,0,0" VerticalAlignment="Top" Width="220" Height="70"
+                Command="{Binding OnMonitorClipboardCommand}">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -35,32 +50,47 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <Rectangle Grid.Column="0" Width="30" Height="40"
-                           Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                <Rectangle Grid.Column="0" Width="30" Height="40">
                     <Rectangle.OpacityMask>
                         <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_clipboard_variant}" />
                     </Rectangle.OpacityMask>
                 </Rectangle>
 
-                <Rectangle Grid.Column="1" Width="30" Height="20"
-                        Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                <Rectangle Grid.Column="1" Width="30" Height="20">
                     <Rectangle.OpacityMask>
                         <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_control_fastforward_variant}" />
                     </Rectangle.OpacityMask>
                 </Rectangle>
 
-                <Rectangle Grid.Column="2" Width="40" Height="40"
-                           Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                <Rectangle Grid.Column="2" Width="40" Height="40">
                     <Rectangle.OpacityMask>
                         <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_office_excel}" />
                     </Rectangle.OpacityMask>
                 </Rectangle>
             </Grid>
         </Button>
-
-        <Controls:MetroProgressBar 
-            HorizontalAlignment="Left" Margin="20,84,0,0" VerticalAlignment="Top" Width="220" Height="3"
-            Value="100" IsHitTestVisible="False"/>
+        
+        <Rectangle Margin="20,85,0,0" Width="220" Height="5" HorizontalAlignment="Left" VerticalAlignment="Top"
+                   Fill="{StaticResource AccentColorBrush}" Opacity="0.6">
+            <Rectangle.Style>
+                <Style>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsEnableMonitor}" Value="True">
+                            <DataTrigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                             Storyboard.TargetProperty="Opacity"
+                                             To="0.0" Duration="0:0:3" 
+                                             RepeatBehavior="Forever" AutoReverse="True"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.EnterActions>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Rectangle.Style>
+        </Rectangle>
         
         <Border Height="70" Margin="260,20,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="70"
                 BorderThickness="1" BorderBrush="{StaticResource AccentColorBrush}" Opacity="0.6">
