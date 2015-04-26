@@ -2,6 +2,7 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using imageClipPaste.Interfaces;
 using System;
+using System.Windows.Media.Imaging;
 
 namespace imageClipPaste.ViewModel
 {
@@ -19,6 +20,13 @@ namespace imageClipPaste.ViewModel
         {
             get { return isEnableMonitor; }
             set { Set(ref isEnableMonitor, value); }
+        }
+
+        private BitmapImage capturedImage;
+        public BitmapImage CapturedImage
+        {
+            get { return capturedImage; }
+            set { Set(ref capturedImage, value); }
         }
         #endregion
 
@@ -88,7 +96,7 @@ namespace imageClipPaste.ViewModel
         /// <param name="e"></param>
         void imageWatcher_CapturedNewerImage(object sender, CapturedNewerImageEventArgs e)
         {
-
+            CapturedImage = e.newImage;
         }
     }
 }
