@@ -86,6 +86,15 @@
                                     </Storyboard>
                                 </BeginStoryboard>
                             </DataTrigger.EnterActions>
+                            <DataTrigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard FillBehavior="Stop">
+                                        <DoubleAnimation
+                                            Storyboard.TargetProperty="Opacity"
+                                            To="0.6" Duration="0:0:1" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.ExitActions>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
@@ -94,7 +103,7 @@
         
         <Border Height="70" Margin="260,20,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="70"
                 BorderThickness="1" BorderBrush="{StaticResource AccentColorBrush}" Opacity="0.6">
-            <Image Width="Auto" Height="Auto" Name="image"/>
+            <Image Width="Auto" Height="Auto" Source="{Binding CapturedImage}"/>
         </Border>
 
     </Grid>
