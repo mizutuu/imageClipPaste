@@ -1,25 +1,44 @@
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.CommandWpf;
+using imageClipPaste.Interfaces;
+using System;
 
 namespace imageClipPaste.ViewModel
 {
     /// <summary>
-    /// This class contains properties that the main View can data bind to.
-    /// <para>
-    /// Use the <strong>mvvminpc</strong> snippet to add bindable properties to this ViewModel.
-    /// </para>
-    /// <para>
-    /// You can also use Blend to data bind with the tool's support.
-    /// </para>
-    /// <para>
-    /// See http://www.galasoft.ch/mvvm
-    /// </para>
+    /// メインウィンドウのViewModel
     /// </summary>
     public class MainViewModel : ViewModelBase
     {
+        #region Properties
         /// <summary>
-        /// Initializes a new instance of the MainViewModel class.
+        /// クリップボード監視状態
         /// </summary>
-        public MainViewModel()
+        private bool isEnableMonitor;
+        public bool IsEnableMonitor
+        {
+            get { return isEnableMonitor; }
+            set { Set(ref isEnableMonitor, value); }
+        }
+        #endregion
+
+        #region Commands
+        /// <summary>
+        /// クリップボード監視切り替えコマンド
+        /// </summary>
+        private RelayCommand onMonitorClipboardCommand;
+        public RelayCommand OnMonitorClipboardCommand
+        {
+            get { return onMonitorClipboardCommand = onMonitorClipboardCommand ?? new RelayCommand(onMonitorClipboard); }
+        }
+        #endregion
+
+        private IImageWatcher imageWatcher;
+
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
+        public MainViewModel(IImageWatcher service)
         {
             ////if (IsInDesignMode)
             ////{
@@ -29,6 +48,47 @@ namespace imageClipPaste.ViewModel
             ////{
             ////    // Code runs "for real"
             ////}
+
+            imageWatcher = service;
+            imageWatcher.Interval = TimeSpan.FromMilliseconds(1000);
+            imageWatcher.CapturedNewerImage += imageWatcher_CapturedNewerImage;
+        }
+
+        /// <summary>
+        /// MVVM Light ToolkitのCleanup
+        /// </summary>
+        public override void Cleanup()
+        {
+            // 
+            imageWatcher.Stop();
+
+            base.Cleanup();
+        }
+
+        /// <summary>
+        /// クリップボード監視切り替えを行います
+        /// </summary>
+        private void onMonitorClipboard()
+        {
+            if (imageWatcher.IsEnabled)
+            {
+                imageWatcher.Stop();
+            }
+            else
+            {
+                imageWatcher.Start();
+            }
+            IsEnableMonitor = imageWatcher.IsEnabled;
+        }
+
+        /// <summary>
+        /// 新しい画像通知イベントハンドラ
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void imageWatcher_CapturedNewerImage(object sender, CapturedNewerImageEventArgs e)
+        {
+
         }
     }
 }
