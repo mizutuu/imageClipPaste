@@ -28,31 +28,6 @@ namespace imageClipPaste
         public MainWindow()
         {
             InitializeComponent();
-
-            watcher.Interval = TimeSpan.FromMilliseconds(1000);
-            watcher.CapturedNewerImage += watcher_CapturedNewerImage;
-        }
-
-        void watcher_CapturedNewerImage(object sender, CapturedNewerImageEventArgs e)
-        {
-            image.Dispatcher.Invoke(() =>
-            {
-                image.Source = e.newImage;
-            });
-            
-        }
-
-        private ClipboardImageWatchService watcher = new ClipboardImageWatchService();
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            if (watcher.IsEnabled)
-            {
-                watcher.Stop();
-            }
-            else
-            {
-                watcher.Start();
-            }
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
