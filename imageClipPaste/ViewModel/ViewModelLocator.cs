@@ -14,6 +14,8 @@
 
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
+using imageClipPaste.Interfaces;
+using imageClipPaste.Services;
 using Microsoft.Practices.ServiceLocation;
 
 namespace imageClipPaste.ViewModel
@@ -41,6 +43,16 @@ namespace imageClipPaste.ViewModel
             ////    // Create run time view services and models
             ////    SimpleIoc.Default.Register<IDataService, DataService>();
             ////}
+
+            // クリップボード監視用サービスを登録
+            if (ViewModelBase.IsInDesignModeStatic)
+            {
+                // TODO: テスト用スタブサービスの登録
+            }
+            else
+            {
+                SimpleIoc.Default.Register<IImageWatcher, ClipboardImageWatchService>();
+            }
 
             SimpleIoc.Default.Register<MainViewModel>();
         }
