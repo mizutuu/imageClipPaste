@@ -35,13 +35,11 @@ namespace imageClipPaste
 
         void watcher_CapturedNewerImage(object sender, CapturedNewerImageEventArgs e)
         {
-            //putLog("event Fire!!!");
-            /*
             image.Dispatcher.Invoke(() =>
             {
                 image.Source = e.newImage;
             });
-            */
+            
         }
 
         private ClipboardImageWatchService watcher = new ClipboardImageWatchService();
