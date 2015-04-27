@@ -26,5 +26,19 @@ namespace imageClipPaste.Properties
                 return defaultInstance;
             }
         }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public imageClipPaste.Settings.ImageClipPasteSetting Setting
+        {
+            get
+            {
+                return ((imageClipPaste.Settings.ImageClipPasteSetting)(this["Setting"]));
+            }
+            set
+            {
+                this["Setting"] = value;
+            }
+        }
     }
 }
