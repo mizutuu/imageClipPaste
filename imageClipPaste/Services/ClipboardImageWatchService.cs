@@ -124,10 +124,8 @@ namespace imageClipPaste.Services
                         // 指定時間待つ
                         Thread.Sleep(Interval);
                     }
-                }
-                catch (TaskCanceledException)
-                {
-                    logger.Debug("監視タスクがキャンセルされました。");
+
+                    logger.Debug("監視タスクが正常に終了しました。");
                 }
                 catch (Exception ex)
                 {

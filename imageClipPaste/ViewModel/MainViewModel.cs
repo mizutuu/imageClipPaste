@@ -1,6 +1,7 @@
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using imageClipPaste.Interfaces;
+using imageClipPaste.Views.Dialog;
 using System;
 using System.Windows.Media.Imaging;
 
@@ -41,12 +42,16 @@ namespace imageClipPaste.ViewModel
         }
         #endregion
 
-        private IImageWatcher imageWatcher;
+        /// <summary>クリップボードの画像を監視するサービス</summary>
+        private IImageWatcher _imageWatcher;
+
+        /// <summary>ウィンドウを表示するサービス</summary>
+        private IWindowService _windowService;
 
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        public MainViewModel(IImageWatcher service)
+        public MainViewModel(IImageWatcher service, IWindowService windowService)
         {
             ////if (IsInDesignMode)
             ////{
@@ -57,9 +62,11 @@ namespace imageClipPaste.ViewModel
             ////    // Code runs "for real"
             ////}
 
-            imageWatcher = service;
-            imageWatcher.Interval = TimeSpan.FromMilliseconds(1000);
-            imageWatcher.CapturedNewerImage += imageWatcher_CapturedNewerImage;
+            _imageWatcher = service;
+            _imageWatcher.Interval = TimeSpan.FromMilliseconds(1000);
+            _imageWatcher.CapturedNewerImage += imageWatcher_CapturedNewerImage;
+
+            _windowService = windowService;
         }
 
         /// <summary>
@@ -68,7 +75,7 @@ namespace imageClipPaste.ViewModel
         public override void Cleanup()
         {
             // 
-            imageWatcher.Stop();
+            _imageWatcher.Stop();
 
             base.Cleanup();
         }
@@ -78,15 +85,21 @@ namespace imageClipPaste.ViewModel
         /// </summary>
         private void onMonitorClipboard()
         {
-            if (imageWatcher.IsEnabled)
+            if (_imageWatcher.IsEnabled)
             {
-                imageWatcher.Stop();
+                _imageWatcher.Stop();
             }
             else
             {
-                imageWatcher.Start();
+                // 貼り付け不可能の場合は、プロセス選択ダイアログを開き、callbackで処理を開始する。
+                // 貼り付け可能の場合は、処理を開始する。
+                _windowService.ShowDialog<Views.PasteProcessSelectWindow>(() =>
+                {
+                    return; 
+                    //_imageWatcher.Start();
+                });
             }
-            IsEnableMonitor = imageWatcher.IsEnabled;
+            IsEnableMonitor = _imageWatcher.IsEnabled;
         }
 
         /// <summary>

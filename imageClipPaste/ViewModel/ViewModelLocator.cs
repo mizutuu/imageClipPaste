@@ -16,6 +16,7 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
 using imageClipPaste.Interfaces;
 using imageClipPaste.Services;
+using imageClipPaste.Views.Dialog;
 using Microsoft.Practices.ServiceLocation;
 
 namespace imageClipPaste.ViewModel
@@ -54,20 +55,48 @@ namespace imageClipPaste.ViewModel
                 SimpleIoc.Default.Register<IImageWatcher, ClipboardImageWatchService>();
             }
 
-            SimpleIoc.Default.Register<MainViewModel>();
+            // ダイアログ表示サービスを登録
+            if (ViewModelBase.IsInDesignModeStatic)
+            {
+                // TODO: テスト用スタブサービスの登録
+            }
+            else
+            {
+                SimpleIoc.Default.Register<IWindowService, ProcessSelectDialogService>();
+            }
+
         }
 
         public MainViewModel Main
         {
             get
             {
+                if (!SimpleIoc.Default.ContainsCreated<MainViewModel>())
+                    SimpleIoc.Default.Register<MainViewModel>();
+
                 return ServiceLocator.Current.GetInstance<MainViewModel>();
+            }
+        }
+
+        public PasteProcessSelectViewModel PasteProcessSelect
+        {
+            get
+            {
+                if (!SimpleIoc.Default.ContainsCreated<PasteProcessSelectViewModel>())
+                    SimpleIoc.Default.Register<PasteProcessSelectViewModel>();
+
+                return ServiceLocator.Current.GetInstance<PasteProcessSelectViewModel>();
             }
         }
         
         public static void Cleanup()
         {
-            // TODO Clear the ViewModels
+
+            // サービスの登録を解除します。
+            SimpleIoc.Default.Unregister<ClipboardImageWatchService>();
+            SimpleIoc.Default.Unregister<ProcessSelectDialogService>();
+
+            // TODO: Clear the ViewModels
         }
     }
 }
