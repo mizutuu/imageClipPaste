@@ -11,7 +11,7 @@ namespace imageClipPaste.Views.Dialog
     /// <summary>
     /// 貼り付け先の選択ダイアログサービス
     /// </summary>
-    public class ProcessSelectDialogService : IWindowService
+    public class ModalDialogService : IWindowService
     {
         /// <summary>
         /// ダイアログを表示する
@@ -26,7 +26,19 @@ namespace imageClipPaste.Views.Dialog
             {
                 Owner = w
             }.ShowDialog();
-            afterHideCallback.Invoke();
+
+            if (afterHideCallback != null)
+                afterHideCallback.Invoke();
+        }
+
+        /// <summary>
+        /// ダイアログを表示する
+        /// </summary>
+        /// <typeparam name="T">表示するウィンドウクラス</typeparam>
+        public void ShowDialog<T>()
+            where T : Window, new()
+        {
+            this.ShowDialog<T>(null);
         }
 
         /// <summary>
