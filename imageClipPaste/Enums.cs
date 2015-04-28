@@ -1,20 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace imageClipPaste.Enum
+namespace imageClipPaste.Enums
 {
     /// <summary>
     /// 貼り付け先の種別
     /// </summary>
     public enum PasteType
     {
-        /// <summary>Excel</summary>
+        [Description("Excel")]
         Excel,
 
-        /// <summary>PowerPoint</summary>
+        [Description("PowerPoint")]
         PowerPoint
     }
 }
