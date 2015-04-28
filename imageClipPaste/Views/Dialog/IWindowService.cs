@@ -9,10 +9,10 @@ namespace imageClipPaste.Views.Dialog
 {
     public interface IWindowService
     {
-        void ShowDialog<T>(Action afterHideCallback)
+        bool? ShowDialog<T>(Action afterHideCallback)
             where T : Window, new();
 
-        void ShowDialog<T>()
+        bool? ShowDialog<T>()
             where T : Window, new();
     }
 }

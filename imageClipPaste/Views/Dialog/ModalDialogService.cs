@@ -18,27 +18,30 @@ namespace imageClipPaste.Views.Dialog
         /// </summary>
         /// <typeparam name="T">表示するウィンドウクラス</typeparam>
         /// <param name="afterHideCallback">非表示とした後に実行するAction</param>
-        public void ShowDialog<T>(Action afterHideCallback)
+        public bool? ShowDialog<T>(Action afterHideCallback)
             where T : Window, new()
         {
+            bool? result;
             var w = GetCurrentWindow();
-            new T
+            result = new T
             {
                 Owner = w
             }.ShowDialog();
 
             if (afterHideCallback != null)
                 afterHideCallback.Invoke();
+
+            return result;
         }
 
         /// <summary>
         /// ダイアログを表示する
         /// </summary>
         /// <typeparam name="T">表示するウィンドウクラス</typeparam>
-        public void ShowDialog<T>()
+        public bool? ShowDialog<T>()
             where T : Window, new()
         {
-            this.ShowDialog<T>(null);
+            return this.ShowDialog<T>(null);
         }
 
         /// <summary>
