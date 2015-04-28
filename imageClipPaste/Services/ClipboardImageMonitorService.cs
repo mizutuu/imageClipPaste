@@ -16,7 +16,7 @@ namespace imageClipPaste.Services
     /// <summary>
     /// クリップボードを監視して、新しい画像がある場合に通知するサービス
     /// </summary>
-    public class ClipboardImageMonitorService : IImageWatcher
+    public class ClipboardImageMonitorService : IImageMonitor
     {
         /// <summary>NLog</summary>
         private static Logger logger = LogManager.GetCurrentClassLogger();

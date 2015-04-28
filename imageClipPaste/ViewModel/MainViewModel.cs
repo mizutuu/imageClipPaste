@@ -76,7 +76,7 @@ namespace imageClipPaste.ViewModel
         #endregion
 
         /// <summary>クリップボードの画像を監視するサービス</summary>
-        private IImageWatcher _clipboardMonitorService;
+        private IImageMonitor _clipboardMonitorService;
 
         /// <summary>ウィンドウを表示するサービス</summary>
         private IWindowService _windowService;
@@ -84,7 +84,7 @@ namespace imageClipPaste.ViewModel
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        public MainViewModel(IImageWatcher clipboardMonitor, IWindowService windowService)
+        public MainViewModel(IImageMonitor clipboardMonitor, IWindowService windowService)
         {
             // クリップボード監視サービスを初期化する
             _clipboardMonitorService = clipboardMonitor;

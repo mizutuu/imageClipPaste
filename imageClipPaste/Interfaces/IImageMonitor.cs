@@ -10,7 +10,7 @@ namespace imageClipPaste.Interfaces
     /// <summary>
     /// 定期的に画像を取得し、新しい画像がある場合に、取得した画像を通知するインタフェース
     /// </summary>
-    public interface IImageWatcher
+    public interface IImageMonitor
     {
         /// <summary>
         /// 監視状態

@@ -52,7 +52,7 @@ namespace imageClipPaste.ViewModel
             }
             else
             {
-                SimpleIoc.Default.Register<IImageWatcher, ClipboardImageMonitorService>();
+                SimpleIoc.Default.Register<IImageMonitor, ClipboardImageMonitorService>();
             }
 
             // ダイアログ表示サービスを登録
