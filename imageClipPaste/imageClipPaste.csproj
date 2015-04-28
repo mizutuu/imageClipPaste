@@ -106,8 +106,9 @@
     <Compile Include="Services\ClipboardImageMonitorService.cs" />
     <Compile Include="Services\Clipboard\ClipboardImage.cs" />
     <Compile Include="Services\Clipboard\ClipboardImageManager.cs" />
-    <Compile Include="Services\ImagePasteService.cs" />
+    <Compile Include="Services\ImagePasteFactory.cs" />
     <Compile Include="Services\Paste\ImagePasteExcel.cs" />
+    <Compile Include="Services\Paste\ImagePastePowerPoint.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Settings\PasteExcelSetting.cs" />
     <Compile Include="Settings\ImageClipPasteSetting.cs" />
