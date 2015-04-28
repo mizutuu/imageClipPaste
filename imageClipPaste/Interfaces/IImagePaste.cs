@@ -10,7 +10,7 @@ namespace imageClipPaste.Interfaces
     /// <summary>
     /// 画像を特定のプロセスに貼り付けるインタフェース
     /// </summary>
-    public interface IImagePaste
+    public interface IImagePaste : IDisposable
     {
         /// <summary>
         /// 貼り付け可能状態
