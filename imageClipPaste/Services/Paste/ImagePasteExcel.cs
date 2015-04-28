@@ -19,8 +19,20 @@ namespace imageClipPaste.Services.Paste
         /// </summary>
         public bool IsPastable { get { return IsAlivePasteProcess(); } }
 
+        /// <summary>貼り付け設定</summary>
+        private Settings.PasteExcelSetting _setting;
+
         /// <summary>Excelアプリケーション</summary>
         private NetOffice.ExcelApi.Application _xlsApplication;
+
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
+        /// <param name="setting">貼り付け設定</param>
+        public ImagePasteExcel(Settings.PasteExcelSetting setting)
+        {
+            _setting = setting;
+        }
 
         /// <summary>
         /// 貼り付け先のプロセスが生存しているか取得します
