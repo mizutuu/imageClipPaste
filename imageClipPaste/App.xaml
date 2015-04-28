@@ -4,6 +4,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006"
              d1p1:Ignorable="d" 
+             xmlns:converter="clr-namespace:imageClipPaste.Views.Converters"
+             xmlns:command="clr-namespace:imageClipPaste.Views.Commands"
              StartupUri="MainWindow.xaml" 
              Startup="Application_Startup" 
              Exit="Application_Exit">
@@ -34,6 +36,13 @@
                 <Path Width="38.75" Height="26" Canvas.Left="19" Canvas.Top="25" Stretch="Fill" Fill="#FF000000" Data="F1 M 19,25L 35.75,38L 19,51L 19,25 Z M 41,25L 57.75,38L 41,51L 41,25 Z " />
             </Canvas>
 
+            <!-- Custom Converters -->
+            <converter:EnumDescriptionConverter x:Key="EnumDescriptionConverter" />
+            
+            <!-- Custom Commands -->
+            <command:CloseWindowCommand x:Key="CloseWindowCommand" />
+            
+            <!-- for MVVM Light Toolkit -->
             <vm:ViewModelLocator x:Key="Locator" d:IsDataSource="True" xmlns:vm="clr-namespace:imageClipPaste.ViewModel" />
         </ResourceDictionary>
     </Application.Resources>

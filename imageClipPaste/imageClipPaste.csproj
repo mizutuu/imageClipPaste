@@ -101,19 +101,29 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Enum.cs" />
+    <Compile Include="Enums.cs" />
     <Compile Include="Interfaces\IImagePaste.cs" />
     <Compile Include="Services\ClipboardImageWatchService.cs" />
     <Compile Include="Services\Clipboard\ClipboardImage.cs" />
     <Compile Include="Services\Clipboard\ClipboardImageManager.cs" />
     <Compile Include="Services\Paste\ImagePasteExcel.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="Settings\PasteExcelSetting.cs" />
     <Compile Include="Settings\ImageClipPasteSetting.cs" />
+    <Compile Include="Settings\PastePowerPointSetting.cs" />
+    <Compile Include="Settings\PasteProcessInfo.cs" />
+    <Compile Include="ViewModel\ApplicationSettingViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\PasteProcessSelectViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
+    <Compile Include="Views\ApplicationSettingWindow.xaml.cs">
+      <DependentUpon>ApplicationSettingWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Commands\CloseWindowCommand.cs" />
+    <Compile Include="Views\Commands\CommandExtension.cs" />
+    <Compile Include="Views\Converters\EnumDescriptionConverter.cs" />
     <Compile Include="Views\Dialog\IWindowService.cs" />
-    <Compile Include="Views\Dialog\ProcessSelectDialogService.cs" />
+    <Compile Include="Views\Dialog\ModalDialogService.cs" />
     <Compile Include="Views\PasteProcessSelectWindow.xaml.cs">
       <DependentUpon>PasteProcessSelectWindow.xaml</DependentUpon>
     </Compile>
@@ -130,6 +140,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\ApplicationSettingWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\PasteProcessSelectWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
