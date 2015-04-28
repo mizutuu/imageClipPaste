@@ -26,6 +26,9 @@ namespace imageClipPaste
 
         private void Application_Exit(object sender, ExitEventArgs e)
         {
+            // アプリケーション全体に紐づくViewModelを登録解除します
+            ViewModel.ViewModelLocator.Cleanup();
+
             // 未処理例外イベントハンドラを解除します。
             this.DispatcherUnhandledException -= App_DispatcherUnhandledException;
             AppDomain.CurrentDomain.UnhandledException -= CurrentDomain_UnhandledException;
