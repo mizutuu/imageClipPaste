@@ -11,5 +11,8 @@ namespace imageClipPaste.Views.Dialog
     {
         void ShowDialog<T>(Action afterHideCallback)
             where T : Window, new();
+
+        void ShowDialog<T>()
+            where T : Window, new();
     }
 }
