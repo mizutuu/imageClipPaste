@@ -27,5 +27,14 @@ namespace imageClipPaste.ViewModel
         {
 
         }
+
+        /// <summary>
+        /// MVVM Light ToolkitのCleanup
+        /// </summary>
+        public override void Cleanup()
+        {
+
+            base.Cleanup();
+        }
     }
 }

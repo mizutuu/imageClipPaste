@@ -62,11 +62,13 @@ namespace imageClipPaste.ViewModel
             }
             else
             {
-                SimpleIoc.Default.Register<IWindowService, ProcessSelectDialogService>();
+                SimpleIoc.Default.Register<IWindowService, ModalDialogService>();
             }
-
         }
 
+        /// <summary>
+        /// メインウィンドウのViewModelのインスタンスを取得します
+        /// </summary>
         public MainViewModel Main
         {
             get
@@ -78,6 +80,9 @@ namespace imageClipPaste.ViewModel
             }
         }
 
+        /// <summary>
+        /// 画像貼り付け先プロセス選択ウィンドウのViewModelのインスタンスを取得します
+        /// </summary>
         public PasteProcessSelectViewModel PasteProcessSelect
         {
             get
@@ -88,15 +93,61 @@ namespace imageClipPaste.ViewModel
                 return ServiceLocator.Current.GetInstance<PasteProcessSelectViewModel>();
             }
         }
+
+        /// <summary>
+        /// アプリケーション設定ウィンドウのViewModelのインスタンスを取得します
+        /// </summary>
+        public ApplicationSettingViewModel ApplicationSetting
+        {
+            get
+            {
+                if (!SimpleIoc.Default.ContainsCreated<ApplicationSettingViewModel>())
+                    SimpleIoc.Default.Register<ApplicationSettingViewModel>();
+
+                return ServiceLocator.Current.GetInstance<ApplicationSettingViewModel>();
+            }
+        }
         
+        /// <summary>
+        /// アプリケーションに紐づくViewModelを破棄します
+        /// </summary>
         public static void Cleanup()
         {
 
             // サービスの登録を解除します。
             SimpleIoc.Default.Unregister<ClipboardImageWatchService>();
-            SimpleIoc.Default.Unregister<ProcessSelectDialogService>();
+            SimpleIoc.Default.Unregister<ModalDialogService>();
 
-            // TODO: Clear the ViewModels
+            // ViewModelの登録を解除します
+            CleanupPasteProcessSelect();
+            CleanupApplicationSetting();
+
+            SimpleIoc.Default.GetInstance<MainViewModel>().Cleanup();
+            SimpleIoc.Default.Unregister<MainViewModel>();
+        }
+
+        /// <summary>
+        /// 画像貼り付け先プロセス選択ウィンドウのViewModelのインスタンスを登録解除します
+        /// </summary>
+        public static void CleanupPasteProcessSelect()
+        {
+            if (SimpleIoc.Default.IsRegistered<PasteProcessSelectViewModel>())
+            {
+                SimpleIoc.Default.GetInstance<PasteProcessSelectViewModel>().Cleanup();
+                SimpleIoc.Default.Unregister<PasteProcessSelectViewModel>();
+            }
+        }
+
+        /// <summary>
+        /// アプリケーション設定ウィンドウのViewModelのインスタンスを登録解除します
+        /// </summary>
+        public static void CleanupApplicationSetting()
+        {
+            if (SimpleIoc.Default.IsRegistered<ApplicationSettingViewModel>())
+            {
+                SimpleIoc.Default.GetInstance<ApplicationSettingViewModel>().Cleanup();
+                SimpleIoc.Default.Unregister<ApplicationSettingViewModel>();
+            }
         }
     }
 }

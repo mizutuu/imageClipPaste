@@ -1,5 +1,6 @@
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
+using imageClipPaste.Enums;
 using imageClipPaste.Interfaces;
 using imageClipPaste.Views.Dialog;
 using System;
@@ -23,6 +24,16 @@ namespace imageClipPaste.ViewModel
             set { Set(ref isEnableMonitor, value); }
         }
 
+        private PasteType pasteType;
+        public PasteType PasteType
+        {
+            get { return pasteType; }
+            set { Set(ref pasteType, value); }
+        }
+
+        /// <summary>
+        /// クリップボードから取得した画像
+        /// </summary>
         private BitmapImage capturedImage;
         public BitmapImage CapturedImage
         {
@@ -35,15 +46,34 @@ namespace imageClipPaste.ViewModel
         /// <summary>
         /// クリップボード監視切り替えコマンド
         /// </summary>
-        private RelayCommand onMonitorClipboardCommand;
-        public RelayCommand OnMonitorClipboardCommand
+        private RelayCommand onSwitchClipboardMonitorCommand;
+        public RelayCommand OnSwitchClipboardMonitorCommand
         {
-            get { return onMonitorClipboardCommand = onMonitorClipboardCommand ?? new RelayCommand(onMonitorClipboard); }
+            get { return onSwitchClipboardMonitorCommand = onSwitchClipboardMonitorCommand ?? new RelayCommand(onSwitchClipboardMonitor); }
+        }
+
+        /// <summary>
+        /// アプリケーション設定ウィンドウを開くコマンド
+        /// </summary>
+        private RelayCommand onOpenSettingCommand;
+        public RelayCommand OnOpenSettingCommand
+        {
+            get
+            {
+                return onOpenSettingCommand = onOpenSettingCommand ?? new RelayCommand(() =>
+                {
+                    // アプリケーション設定ウィンドウをモーダルで表示する
+                    _windowService.ShowDialog<Views.ApplicationSettingWindow>();
+
+                    // 設定値を画面に反映する
+                    PasteType = Properties.Settings.Default.Setting.PasteType;
+                }, () => { return !IsEnableMonitor; });
+            }
         }
         #endregion
 
         /// <summary>クリップボードの画像を監視するサービス</summary>
-        private IImageWatcher _imageWatcher;
+        private IImageWatcher _clipboardMonitorService;
 
         /// <summary>ウィンドウを表示するサービス</summary>
         private IWindowService _windowService;
@@ -51,22 +81,16 @@ namespace imageClipPaste.ViewModel
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        public MainViewModel(IImageWatcher service, IWindowService windowService)
+        public MainViewModel(IImageWatcher clipboardMonitor, IWindowService windowService)
         {
-            ////if (IsInDesignMode)
-            ////{
-            ////    // Code runs in Blend --> create design time data.
-            ////}
-            ////else
-            ////{
-            ////    // Code runs "for real"
-            ////}
-
-            _imageWatcher = service;
-            _imageWatcher.Interval = TimeSpan.FromMilliseconds(1000);
-            _imageWatcher.CapturedNewerImage += imageWatcher_CapturedNewerImage;
+            // クリップボード監視サービスを初期化する
+            _clipboardMonitorService = clipboardMonitor;
+            _clipboardMonitorService.Interval = TimeSpan.FromMilliseconds(1000);
+            _clipboardMonitorService.CapturedNewerImage += imageWatcher_CapturedNewerImage;
 
             _windowService = windowService;
+
+            PasteType = Properties.Settings.Default.Setting.PasteType;
         }
 
         /// <summary>
@@ -75,7 +99,7 @@ namespace imageClipPaste.ViewModel
         public override void Cleanup()
         {
             // 
-            _imageWatcher.Stop();
+            _clipboardMonitorService.Stop();
 
             base.Cleanup();
         }
@@ -83,23 +107,37 @@ namespace imageClipPaste.ViewModel
         /// <summary>
         /// クリップボード監視切り替えを行います
         /// </summary>
-        private void onMonitorClipboard()
+        private void onSwitchClipboardMonitor()
         {
-            if (_imageWatcher.IsEnabled)
+            if (_clipboardMonitorService.IsEnabled)
             {
-                _imageWatcher.Stop();
+                _clipboardMonitorService.Stop();
             }
             else
             {
+                // 貼り付け実行クラスのインスタンスを取得
+                // 
+                // 貼り付け不可能？
+                // →貼り付け先を選んでもらう
+                //
+                // 監視を開始する
+                
+
                 // 貼り付け不可能の場合は、プロセス選択ダイアログを開き、callbackで処理を開始する。
                 // 貼り付け可能の場合は、処理を開始する。
-                _windowService.ShowDialog<Views.PasteProcessSelectWindow>(() =>
+                if (false)
                 {
-                    return; 
-                    //_imageWatcher.Start();
-                });
+                    _windowService.ShowDialog<Views.PasteProcessSelectWindow>(() =>
+                    {
+
+                        return;
+                        //_imageWatcher.Start();
+                    });
+                }
+
+                _clipboardMonitorService.Start();
             }
-            IsEnableMonitor = _imageWatcher.IsEnabled;
+            IsEnableMonitor = _clipboardMonitorService.IsEnabled;
         }
 
         /// <summary>
@@ -110,6 +148,8 @@ namespace imageClipPaste.ViewModel
         void imageWatcher_CapturedNewerImage(object sender, CapturedNewerImageEventArgs e)
         {
             CapturedImage = e.newImage;
+
+            // TODO: 貼り付けターゲットに貼り付ける。
         }
     }
 }
