@@ -16,7 +16,7 @@ namespace imageClipPaste.Services
     /// <summary>
     /// クリップボードを監視して、新しい画像がある場合に通知するサービス
     /// </summary>
-    public class ClipboardImageWatchService : IImageWatcher
+    public class ClipboardImageMonitorService : IImageWatcher
     {
         /// <summary>NLog</summary>
         private static Logger logger = LogManager.GetCurrentClassLogger();
@@ -36,23 +36,23 @@ namespace imageClipPaste.Services
         /// <summary>
         /// 監視実行タスク
         /// </summary>
-        private Thread WatchExecutor;
+        private Thread MonitorExecutor;
 
         /// <summary>
         /// 監視停止用トークンソース
         /// </summary>
-        private CancellationTokenSource WatchCancelToken;
+        private CancellationTokenSource MonitorCancelToken;
 
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        public ClipboardImageWatchService()
+        public ClipboardImageMonitorService()
         {
             IsEnabled = false;
             FilterSameImage = true;
             Interval = TimeSpan.FromMilliseconds(1000);
-            WatchCancelToken = new CancellationTokenSource();
-            WatchCancelToken.Cancel();
+            MonitorCancelToken = new CancellationTokenSource();
+            MonitorCancelToken.Cancel();
         }
 
         /// <summary>
@@ -61,15 +61,15 @@ namespace imageClipPaste.Services
         public void Start()
         {
             // すでに監視中の場合は何もしない
-            if (!WatchCancelToken.IsCancellationRequested)
+            if (!MonitorCancelToken.IsCancellationRequested)
             {
                 logger.Debug("監視中に監視が開始されました。");
                 return;
             }
 
             logger.Debug("監視タスクを起動します。");
-            WatchCancelToken = new CancellationTokenSource();
-            WatchExecutor = execution(WatchCancelToken.Token);
+            MonitorCancelToken = new CancellationTokenSource();
+            MonitorExecutor = execution(MonitorCancelToken.Token);
             IsEnabled = true;
         }
 
@@ -79,19 +79,19 @@ namespace imageClipPaste.Services
         public void Stop()
         {
             // すでに監視が停止されている場合は何もしない
-            if (WatchCancelToken.IsCancellationRequested)
+            if (MonitorCancelToken.IsCancellationRequested)
             {
                 logger.Debug("監視停止状態で監視が停止されました。");
                 return;
             }
 
             logger.Debug("監視タスクにキャンセル要求を発行します。");
-            using (var token = WatchCancelToken)
+            using (var token = MonitorCancelToken)
             {
                 token.Cancel();
 
                 // タスクの停止を待機する
-                WatchExecutor.Join();
+                MonitorExecutor.Join();
                 IsEnabled = false;
             }
         }

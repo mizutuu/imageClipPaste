@@ -52,7 +52,7 @@ namespace imageClipPaste.ViewModel
             }
             else
             {
-                SimpleIoc.Default.Register<IImageWatcher, ClipboardImageWatchService>();
+                SimpleIoc.Default.Register<IImageWatcher, ClipboardImageMonitorService>();
             }
 
             // ダイアログ表示サービスを登録
@@ -115,7 +115,7 @@ namespace imageClipPaste.ViewModel
         {
 
             // サービスの登録を解除します。
-            SimpleIoc.Default.Unregister<ClipboardImageWatchService>();
+            SimpleIoc.Default.Unregister<ClipboardImageMonitorService>();
             SimpleIoc.Default.Unregister<ModalDialogService>();
 
             // ViewModelの登録を解除します

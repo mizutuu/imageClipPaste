@@ -24,6 +24,9 @@ namespace imageClipPaste.ViewModel
             set { Set(ref isEnableMonitor, value); }
         }
 
+        /// <summary>
+        /// “\‚è•t‚¯æí•Ê
+        /// </summary>
         private PasteType pasteType;
         public PasteType PasteType
         {
