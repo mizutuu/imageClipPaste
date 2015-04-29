@@ -30,7 +30,7 @@
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="42" />
-                <RowDefinition Height="40" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
             <Label Grid.Row="0" Grid.Column="0" VerticalContentAlignment="Center" Content="監視間隔(ms): " />
@@ -42,7 +42,7 @@
             <Label Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="0, 0, 0, 0"
                    Content="{Binding IntervalMilliseconds, Mode=OneWay}" IsHitTestVisible="False" />
             
-
+            <!--
             <Label Grid.Row="1" Grid.Column="0" VerticalContentAlignment="Center" Content="画像の貼り付け先: " />
             <ComboBox Grid.Row="1" Grid.Column="1" Height="30"
                             ItemsSource="{Binding Source={StaticResource PasteTypeProvider}}"
@@ -53,6 +53,7 @@
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
+            -->
         </Grid>
         
         <GroupBox Header="Excelへの貼り付け設定" Margin="20, 0, 20, 10">
