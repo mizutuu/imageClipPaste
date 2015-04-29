@@ -14,9 +14,34 @@
 
         <Style TargetType="{x:Type Rectangle}" x:Key="baseRectangleStyle">
             <Setter Property="Fill" Value="{Binding ElementName=monitorButton, Path=Foreground}" />
+            
             <Style.Triggers>
                 <DataTrigger Binding="{Binding IsEnableMonitor}" Value="True">
                     <Setter Property="Fill" Value="{StaticResource AccentColorBrush}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="{x:Type Rectangle}" x:Key="PasteTypeRectangleStyle" BasedOn="{StaticResource baseRectangleStyle}">
+            <Setter Property="OpacityMask">
+                <Setter.Value>
+                    <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_image_ants}" />
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding PasteType}" Value="{x:Static enum:PasteType.Excel}">
+                    <Setter Property="OpacityMask">
+                        <Setter.Value>
+                            <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_office_excel}" />
+                        </Setter.Value>
+                    </Setter>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding PasteType}" Value="{x:Static enum:PasteType.PowerPoint}">
+                    <Setter Property="OpacityMask">
+                        <Setter.Value>
+                            <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_office_powerpoint}" />
+                        </Setter.Value>
+                    </Setter>
                 </DataTrigger>
             </Style.Triggers>
         </Style>
@@ -64,27 +89,7 @@
                     </Rectangle.OpacityMask>
                 </Rectangle>
 
-                <Rectangle Grid.Column="2" Width="40" Height="40">
-                    <Rectangle.Style>
-                        <Style TargetType="{x:Type Rectangle}" BasedOn="{StaticResource baseRectangleStyle}">
-                            <Setter Property="OpacityMask">
-                                <Setter.Value>
-                                    <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_office_excel}" />
-                                </Setter.Value>
-                            </Setter>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding PasteType}" Value="{x:Static enum:PasteType.PowerPoint}">
-                                    <Setter Property="OpacityMask">
-                                        <Setter.Value>
-                                            <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_office_powerpoint}" />
-                                        </Setter.Value>
-                                    </Setter>
-
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Rectangle.Style>
-                </Rectangle>
+                <Rectangle Grid.Column="2" Width="40" Height="40" Style="{StaticResource PasteTypeRectangleStyle}" />
             </Grid>
         </Button>
         
