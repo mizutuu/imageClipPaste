@@ -14,6 +14,11 @@ namespace imageClipPaste.Views.Commands
         /// <param name="parameter">Windowオブジェクト</param>
         public override void Execute(object parameter)
         {
+            CloseWindow(parameter, true);
+        }
+
+        protected void CloseWindow(object parameter, bool dialogResult)
+        {
             Window w = parameter as Window;
             if (w == null)
                 throw new ArgumentNullException(
@@ -22,6 +27,7 @@ namespace imageClipPaste.Views.Commands
 
             // コマンド発行元ウィンドウのクローズを実行します。
             // window.Close() -> Closing -> Closedとイベントが流れていきます。
+            w.DialogResult = dialogResult;
             w.Close();
         }
     }

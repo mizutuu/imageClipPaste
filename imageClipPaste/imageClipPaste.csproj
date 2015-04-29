@@ -121,6 +121,7 @@
     <Compile Include="Views\ApplicationSettingWindow.xaml.cs">
       <DependentUpon>ApplicationSettingWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Commands\CloseCancelWindowCommand.cs" />
     <Compile Include="Views\Commands\CloseWindowCommand.cs" />
     <Compile Include="Views\Commands\CommandExtension.cs" />
     <Compile Include="Views\Converters\EnumDescriptionConverter.cs" />

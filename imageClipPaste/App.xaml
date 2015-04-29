@@ -44,6 +44,7 @@
             
             <!-- Custom Commands -->
             <command:CloseWindowCommand x:Key="CloseWindowCommand" />
+            <command:CloseCancelWindowCommand x:Key="CloseCancelWindowCommand" />
             
             <!-- for MVVM Light Toolkit -->
             <vm:ViewModelLocator x:Key="Locator" d:IsDataSource="True" xmlns:vm="clr-namespace:imageClipPaste.ViewModel" />
