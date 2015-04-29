@@ -19,9 +19,9 @@ namespace imageClipPaste.Services
         /// </summary>
         /// <param name="pasteType">貼り付け対象の種別</param>
         /// <returns></returns>
-        public static IImagePaste Create(PasteType pasteType, Settings.ImageClipPasteSetting setting)
+        public static IImagePaste Create(Settings.ImageClipPasteSetting setting)
         {
-            switch (pasteType)
+            switch (setting.CurrentPasteProcessInfo.PasteType)
             {
                 case PasteType.Excel:
                     return new ImagePasteExcel(setting.ExcelSetting);
