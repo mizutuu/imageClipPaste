@@ -12,7 +12,6 @@ namespace imageClipPaste.Settings
     [Serializable]
     public class PastePowerPointSetting
     {
-        /// <summary>貼り付け先情報</summary>
-        public PasteProcessInfo ProcessInfo { get; set; }
+        
     }
 }

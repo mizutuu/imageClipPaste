@@ -19,9 +19,9 @@ namespace imageClipPaste.Settings
         public TimeSpan ClipboardMonitorInterval { get; set; }
 
         /// <summary>
-        /// 貼り付け先の種別
+        /// 貼り付け先のプロセス情報
         /// </summary>
-        public PasteType PasteType { get; set; }
+        public PasteProcessInfo CurrentPasteProcessInfo { get; set; }
 
         /// <summary>
         /// Excelに貼り付けるときの設定
@@ -39,7 +39,7 @@ namespace imageClipPaste.Settings
         public ImageClipPasteSetting()
         {
             ClipboardMonitorInterval = TimeSpan.FromMilliseconds(200);
-            PasteType = PasteType.Excel;
+            CurrentPasteProcessInfo = new PasteProcessInfo();
             ExcelSetting = new PasteExcelSetting();
             PowerPointSetting = new PastePowerPointSetting();
         }
