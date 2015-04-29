@@ -65,12 +65,12 @@
         </GroupBox>
         
         <StackPanel Margin="20, 10, 20, 20" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Content="OK" 
+            <Button Content="OK"
                     Command="{Binding OnOkCommand}"
                     CommandParameter="{Binding Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"/>
 
             <Button Content="キャンセル" Margin="20, 0, 0, 0"
-                    Command="{StaticResource CloseWindowCommand}"
+                    Command="{StaticResource CloseCancelWindowCommand}"
                     CommandParameter="{Binding Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"/>
         </StackPanel>
     </StackPanel>
