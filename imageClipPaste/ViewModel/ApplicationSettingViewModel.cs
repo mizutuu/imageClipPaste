@@ -31,15 +31,16 @@ namespace imageClipPaste.ViewModel
         /// <summary>
         /// OKボタンコマンド
         /// </summary>
-        private RelayCommand<Window> onOkCommand;
-        public RelayCommand<Window> OnOkCommand
+        private RelayCommand onOkCommand;
+        public RelayCommand OnOkCommand
         {
             get
             {
-                return onOkCommand = onOkCommand ?? new RelayCommand<Window>((window) =>
+                return onOkCommand = onOkCommand ?? new RelayCommand(() =>
                 {
-                    Save();
-                    window.Close();
+                    // アプリケーション設定を、Settingsオブジェクトに設定します
+                    Properties.Settings.Default.Setting.ClipboardMonitorInterval = 
+                        TimeSpan.FromMilliseconds(IntervalMilliseconds);
                 });
             }
         }
@@ -51,15 +52,8 @@ namespace imageClipPaste.ViewModel
         public ApplicationSettingViewModel()
         {
             // アプリケーションの設定を読み込む
-            IntervalMilliseconds = Properties.Settings.Default.Setting.ClipboardMonitorInterval.Milliseconds;
-        }
-
-        /// <summary>
-        /// アプリケーション設定を、Settingsオブジェクトに設定します
-        /// </summary>
-        public void Save()
-        {
-            Properties.Settings.Default.Setting.ClipboardMonitorInterval = TimeSpan.FromMilliseconds(IntervalMilliseconds);
+            IntervalMilliseconds = 
+                Properties.Settings.Default.Setting.ClipboardMonitorInterval.Milliseconds;
         }
 
         /// <summary>
