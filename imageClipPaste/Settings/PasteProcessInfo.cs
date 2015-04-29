@@ -29,5 +29,18 @@ namespace imageClipPaste.Settings
         /// 
         /// </summary>
         public PasteType PasteType { get; set; }
+
+        /// <summary>
+        /// 新しいワークブック又は
+        /// </summary>
+        public bool IsRequiredNew { get; set; }
+
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
+        public PasteProcessInfo()
+        {
+            IsRequiredNew = false;
+        }
     }
 }
