@@ -17,16 +17,6 @@ namespace imageClipPaste.ViewModel
     {
         #region Properties
         /// <summary>
-        /// 貼り付け先種別
-        /// </summary>
-        private PasteType pasteType;
-        public PasteType PasteType
-        {
-            get { return pasteType; }
-            set { Set(ref pasteType, value); }
-        }
-
-        /// <summary>
         /// クリップボードの監視間隔
         /// </summary>
         private int intervalMilliseconds;
@@ -61,7 +51,6 @@ namespace imageClipPaste.ViewModel
         public ApplicationSettingViewModel()
         {
             // アプリケーションの設定を読み込む
-            PasteType = Properties.Settings.Default.Setting.PasteType;
             IntervalMilliseconds = Properties.Settings.Default.Setting.ClipboardMonitorInterval.Milliseconds;
         }
 
@@ -70,7 +59,6 @@ namespace imageClipPaste.ViewModel
         /// </summary>
         public void Save()
         {
-            Properties.Settings.Default.Setting.PasteType = PasteType;
             Properties.Settings.Default.Setting.ClipboardMonitorInterval = TimeSpan.FromMilliseconds(IntervalMilliseconds);
         }
 
