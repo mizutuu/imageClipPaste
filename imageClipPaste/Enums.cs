@@ -12,6 +12,9 @@ namespace imageClipPaste.Enums
     /// </summary>
     public enum PasteType
     {
+        [Description("未選択")]
+        NoSelect,
+
         [Description("Excel")]
         Excel,
 
