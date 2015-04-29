@@ -61,11 +61,16 @@ namespace imageClipPaste.ViewModel
                     {
                         _clipboardMonitorService.Stop();
                         CleanupImagePaste();
+                        PasteType = Enums.PasteType.NoSelect;
                     }
                     else
                     {
                         // 画像の貼り付け先を選択し、選択結果をアプリケーション設定に保持します
-                        if (!_windowService.ShowDialog<Views.PasteProcessSelectWindow>().Value)
+                        var dialogResult = 
+                            _windowService.ShowDialog<Views.PasteProcessSelectWindow>(() => {
+                                ViewModelLocator.CleanupPasteProcessSelect();
+                            }).Value;
+                        if (!dialogResult)
                             return;
 
                         PasteType = Properties.Settings.Default.Setting.CurrentPasteProcessInfo.PasteType;
