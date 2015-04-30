@@ -45,7 +45,7 @@ namespace imageClipPaste.ViewModel
         {
             var list = new List<Settings.PasteProcessInfo>();
             list.Add(GetNew(PasteType.Excel));
-            list.Add(GetNew(PasteType.PowerPoint));
+            //list.Add(GetNew(PasteType.PowerPoint)); // TODO:
             list.AddRange(GetPasteProcessList(PasteType.Excel));
             ProcessSource = new ObservableCollection<Settings.PasteProcessInfo>(list);
         }
@@ -106,6 +106,8 @@ namespace imageClipPaste.ViewModel
                     result.Add(new Settings.PasteProcessInfo {
                         Name = book.Name,
                         Path = book.Path,
+                        HInstance = book.Application.Hinstance,
+                        HWnd = book.Application.Hwnd,
                         PasteType = PasteType.Excel
                     }));
 
