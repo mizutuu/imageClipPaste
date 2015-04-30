@@ -26,6 +26,16 @@ namespace imageClipPaste.Settings
         public String Path { get; set; }
 
         /// <summary>
+        /// インスタンスハンドル
+        /// </summary>
+        public int HInstance { get; set; }
+
+        /// <summary>
+        /// ウィンドウハンドル
+        /// </summary>
+        public int HWnd { get; set; }
+
+        /// <summary>
         /// 
         /// </summary>
         public PasteType PasteType { get; set; }
