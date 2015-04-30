@@ -16,22 +16,18 @@ namespace imageClipPaste.Services
     /// <summary>
     /// クリップボードを監視して、新しい画像がある場合に通知するサービス
     /// </summary>
-    public class ClipboardImageMonitorService : IImageMonitor
+    public class ClipboardImageMonitorService : BaseImageMonitorService
     {
         /// <summary>NLog</summary>
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
-        /// <summary>監視状態</summary>
-        public bool IsEnabled { get; set; }
-
-        /// <summary>監視間隔</summary>
-        public TimeSpan Interval { get; set; }
-
-        /// <summary>クリップボードから取得した画像が前回と同じだった場合にフィルタするかを設定します</summary>
-        public bool FilterSameImage { get; set; }
+        /// <summary>
+        /// Has Dispose already been called?
+        /// </summary>
+        bool disposed = false;
 
         /// <summary>新しく取得した画像を通知するイベントハンドラ</summary>
-        public event EventHandler<CapturedNewerImageEventArgs> CapturedNewerImage;
+        public override event EventHandler<CapturedNewerImageEventArgs> CapturedNewerImage;
 
         /// <summary>
         /// 監視実行タスク
@@ -47,10 +43,8 @@ namespace imageClipPaste.Services
         /// コンストラクタ
         /// </summary>
         public ClipboardImageMonitorService()
+            : base()
         {
-            IsEnabled = false;
-            FilterSameImage = true;
-            Interval = TimeSpan.FromMilliseconds(1000);
             MonitorCancelToken = new CancellationTokenSource();
             MonitorCancelToken.Cancel();
         }
@@ -58,7 +52,7 @@ namespace imageClipPaste.Services
         /// <summary>
         /// 画像の監視を開始します
         /// </summary>
-        public void Start()
+        public override void Start()
         {
             // すでに監視中の場合は何もしない
             if (!MonitorCancelToken.IsCancellationRequested)
@@ -76,7 +70,7 @@ namespace imageClipPaste.Services
         /// <summary>
         /// 画像の監視を停止します。
         /// </summary>
-        public void Stop()
+        public override void Stop()
         {
             // すでに監視が停止されている場合は何もしない
             if (MonitorCancelToken.IsCancellationRequested)
@@ -130,12 +124,31 @@ namespace imageClipPaste.Services
                 catch (Exception ex)
                 {
                     logger.Error("監視タスク中に例外が発生しました。", ex);
-                    throw ex;
+                    throw;
                 }
             });
             thread.SetApartmentState(ApartmentState.STA);
             thread.Start();
             return thread;
+        }
+
+        /// <summary>
+        /// Protected implementation of Dispose pattern.
+        /// </summary>
+        /// <param name="disposing"></param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposed)
+                return;
+
+            if (disposing)
+            {
+                MonitorCancelToken.Dispose();
+            }
+
+            // Free any unmanaged objects here.
+            //
+            disposed = true;
         }
     }
 }
