@@ -136,6 +136,8 @@ namespace imageClipPaste.ViewModel
         public override void Cleanup()
         {
             _clipboardMonitorService.Stop();
+            _clipboardMonitorService.CapturedNewerImage -= imageWatcher_CapturedNewerImage;
+            _clipboardMonitorService.Dispose();
             CleanupImagePaste();
             base.Cleanup();
         }
