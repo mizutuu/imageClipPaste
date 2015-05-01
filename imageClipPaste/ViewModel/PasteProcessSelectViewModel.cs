@@ -1,6 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using imageClipPaste.Enums;
+using imageClipPaste.Models.Office;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -87,34 +88,12 @@ namespace imageClipPaste.ViewModel
             switch (pasteType)
             {
                 case PasteType.Excel:
-                    return GetPasteExcelProcessList();
+                    return ExcelModel.GetPasteExcelProcessList();
                 case PasteType.PowerPoint:
                     return GetPastePowerPointList();
                 default:
                     throw new NotImplementedException("not supported.");
             }
-        }
-
-        public List<Settings.PasteProcessInfo> GetPasteExcelProcessList()
-        {
-            List<Settings.PasteProcessInfo> result = new List<Settings.PasteProcessInfo>();
-            NetOffice.ExcelApi.Application[] applications = NetOffice.ExcelApi.Application.GetActiveInstances();
-            applications
-                .SelectMany(app => app.Workbooks)
-                .ToList()
-                .ForEach(book => 
-                    result.Add(new Settings.PasteProcessInfo {
-                        Name = book.Name,
-                        Path = book.Path,
-                        HInstance = book.Application.Hinstance,
-                        HWnd = book.Application.Hwnd,
-                        PasteType = PasteType.Excel
-                    }));
-
-            foreach (var app in applications)
-                app.Dispose();
-
-            return result;
         }
 
         public List<Settings.PasteProcessInfo> GetPastePowerPointList()
