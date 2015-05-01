@@ -1,5 +1,5 @@
 ﻿using imageClipPaste.Interfaces;
-using imageClipPaste.Services.Clipboard;
+using imageClipPaste.Models.Clipboard;
 using NLog;
 using System;
 using System.Collections.Generic;
