@@ -108,9 +108,9 @@
     <Compile Include="Models\Clipboard\ClipboardImage.cs" />
     <Compile Include="Models\Clipboard\ClipboardImageManager.cs" />
     <Compile Include="Services\ImagePasteFactory.cs" />
-    <Compile Include="Services\Paste\BaseImagePaste.cs" />
-    <Compile Include="Services\Paste\ImagePasteExcel.cs" />
-    <Compile Include="Services\Paste\ImagePastePowerPoint.cs" />
+    <Compile Include="Models\Paste\BaseImagePaste.cs" />
+    <Compile Include="Models\Paste\ImagePasteExcel.cs" />
+    <Compile Include="Models\Paste\ImagePastePowerPoint.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Settings\PasteExcelSetting.cs" />
     <Compile Include="Settings\ImageClipPasteSetting.cs" />

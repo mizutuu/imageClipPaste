@@ -1,6 +1,6 @@
 ﻿using imageClipPaste.Enums;
 using imageClipPaste.Interfaces;
-using imageClipPaste.Services.Paste;
+using imageClipPaste.Models.Paste;
 using System;
 using System.Collections.Generic;
 using System.Linq;
