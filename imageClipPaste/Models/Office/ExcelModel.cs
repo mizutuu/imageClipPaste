@@ -1,4 +1,5 @@
-﻿using System;
+﻿using imageClipPaste.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -30,6 +31,9 @@ namespace imageClipPaste.Models.Office
                 {
                     Visible = true
                 };
+
+                // 新しいプロセスではワークブックが無いので追加します
+                app.Workbooks.Add();
             }
             return app;
         }
@@ -95,6 +99,35 @@ namespace imageClipPaste.Models.Office
             }
 
             return findBook;
+        }
+
+        /// <summary>
+        /// 開かれているExcelのワークブック名をリストで取得します
+        /// </summary>
+        /// <returns></returns>
+        public static List<Settings.PasteProcessInfo> GetPasteExcelProcessList()
+        {
+            List<Settings.PasteProcessInfo> result = new List<Settings.PasteProcessInfo>();
+            NetOffice.ExcelApi.Application[] applications = NetOffice.ExcelApi.Application.GetActiveInstances();
+            applications
+                .SelectMany(app => app.Workbooks)
+                .ToList()
+                .Where(book => !book.ReadOnly)
+                .ToList()
+                .ForEach(book =>
+                    result.Add(new Settings.PasteProcessInfo
+                    {
+                        Name = book.Name,
+                        Path = book.Path,
+                        HInstance = book.Application.Hinstance,
+                        HWnd = book.Application.Hwnd,
+                        PasteType = PasteType.Excel
+                    }));
+
+            foreach (var app in applications)
+                app.Dispose();
+
+            return result;
         }
     }
 }
