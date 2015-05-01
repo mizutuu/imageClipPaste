@@ -79,18 +79,29 @@ namespace imageClipPaste.Models.Paste
             return false;
         }
 
+        /// <summary>
+        /// Excelアプリケーションを取得します
+        /// </summary>
+        /// <param name="process"></param>
+        /// <returns></returns>
         private Excel.Application GetExcelApplication(Settings.PasteProcessInfo process)
         {
             if (process.IsRequiredNew)
             {
-                return NewExcelApplication();
+                return Office.ExcelModel.NewExcelApplication();
             }
             else
             {
-                return FindExcelApplication(process.HInstance, process.HWnd);
+                return Office.ExcelModel.FindExcelApplication(process.HInstance, process.HWnd);
             }
         }
 
+        /// <summary>
+        /// Excelワークブックを取得します
+        /// </summary>
+        /// <param name="app"></param>
+        /// <param name="process"></param>
+        /// <returns></returns>
         private Excel.Workbook GetExcelWorkBook(NetOffice.ExcelApi.Application app, Settings.PasteProcessInfo process)
         {
             if (app == null)
@@ -103,93 +114,8 @@ namespace imageClipPaste.Models.Paste
             }
             else
             {
-                return FindExcelWorkbook(app, process.Name);
+                return Office.ExcelModel.FindExcelWorkbook(app, process.Name);
             }
-        }
-
-        /// <summary>
-        /// 新しいExcelアプリケーションを取得します
-        /// </summary>
-        /// <returns>
-        /// Excelプロセスが取得できる場合は、取得したExcelアプリケーションを、
-        /// 取得できない場合は、新しくExcelプロセスを立ち上げ、そのExcelアプリケーションを返却します
-        /// </returns>
-        public Excel.Application NewExcelApplication()
-        {
-            var app = Excel.Application.GetActiveInstance();
-            if (app == null)
-            {
-                // Excelプロセスを立ち上げた場合は
-                // デフォルトで非表示となっているので、表示に切り替える
-                app = new Excel.Application
-                {
-                    Visible = true
-                };
-            }
-            return app;
-        }
-
-        /// <summary>
-        /// 引数に合致するExcelアプリケーションを取得します
-        /// </summary>
-        /// <param name="Hinstance">インスタンスハンドル</param>
-        /// <param name="Hwnd">ウィンドウハンドル</param>
-        /// <returns>
-        /// 合致するExcelアプリケーションが取得できる場合は、取得したExcelアプリケーションを、
-        /// 取得できない場合は、nullを返却します
-        /// </returns>
-        public Excel.Application FindExcelApplication(int Hinstance, int Hwnd)
-        {
-                Excel.Application findApp = null;
-                Excel.Application.GetActiveInstances()
-                    .ToList()
-                    .ForEach((app) =>
-                    {
-                        if (app.Hinstance == Hinstance && app.Hwnd == Hwnd)
-                        {
-                            findApp = app;
-                        }
-                        else
-                        {
-                            app.Dispose();
-                        }
-                    });
-                return findApp;
-        }
-
-        /// <summary>
-        /// 引数に合致するExcelワークブックを取得します
-        /// </summary>
-        /// <param name="app">取得先のExcelアプリケーション</param>
-        /// <param name="name">ワークブックの名前</param>
-        /// <returns>
-        /// 合致するワークブックが取得できる場合は、取得したワークブックを、
-        /// 取得できない場合はnullを返却します
-        /// </returns>
-        public Excel.Workbook FindExcelWorkbook(Excel.Application app, string name)
-        {
-            if (app == null)
-                return null;
-
-            Excel.Workbook findBook = null;
-            using (var books = app.Workbooks)
-            {
-                books
-                    .ToList()
-                    .ForEach((book) =>
-                    {
-                        if (book.Name == name)
-                        {
-                            findBook = book;
-                        }
-                        else
-                        {
-                            book.Dispose();
-                        }
-                    });
-            }
-
-            return findBook;
         }
 
         /// <summary>
