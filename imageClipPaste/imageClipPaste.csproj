@@ -103,6 +103,7 @@
     </ApplicationDefinition>
     <Compile Include="Enums.cs" />
     <Compile Include="Interfaces\IImagePaste.cs" />
+    <Compile Include="Models\Office\ExcelModel.cs" />
     <Compile Include="Services\BaseImageMonitorService.cs" />
     <Compile Include="Services\ClipboardImageMonitorService.cs" />
     <Compile Include="Models\Clipboard\ClipboardImage.cs" />
