@@ -1,11 +1,12 @@
-﻿using NLog;
+﻿using imageClipPaste.Models.Clipboard;
+using NLog;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 
-namespace imageClipPaste.Services.Clipboard
+namespace imageClipPaste.Models.Clipboard
 {
     /// <summary>
     /// クリップボードから取得した画像を管理するクラス

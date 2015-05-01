@@ -105,8 +105,8 @@
     <Compile Include="Interfaces\IImagePaste.cs" />
     <Compile Include="Services\BaseImageMonitorService.cs" />
     <Compile Include="Services\ClipboardImageMonitorService.cs" />
-    <Compile Include="Services\Clipboard\ClipboardImage.cs" />
-    <Compile Include="Services\Clipboard\ClipboardImageManager.cs" />
+    <Compile Include="Models\Clipboard\ClipboardImage.cs" />
+    <Compile Include="Models\Clipboard\ClipboardImageManager.cs" />
     <Compile Include="Services\ImagePasteFactory.cs" />
     <Compile Include="Services\Paste\BaseImagePaste.cs" />
     <Compile Include="Services\Paste\ImagePasteExcel.cs" />
