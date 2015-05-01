@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using Excel = NetOffice.ExcelApi;
 
-namespace imageClipPaste.Services.Paste
+namespace imageClipPaste.Models.Paste
 {
     /// <summary>
     /// 画像をExcelに貼り付けます

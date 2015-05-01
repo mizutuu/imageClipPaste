@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 
-namespace imageClipPaste.Services.Paste
+namespace imageClipPaste.Models.Paste
 {
     /// <summary>
     /// 画像を貼り付けを行うベースクラスです
