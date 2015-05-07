@@ -1,5 +1,4 @@
-﻿using MahApps.Metro.Controls;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,7 +17,7 @@ namespace imageClipPaste.Views
     /// <summary>
     /// ApplicationSettingWindow.xaml の相互作用ロジック
     /// </summary>
-    public partial class ApplicationSettingWindow : MetroWindow
+    public partial class ApplicationSettingWindow : MahApps.Metro.Controls.MetroWindow
     {
         public ApplicationSettingWindow()
         {

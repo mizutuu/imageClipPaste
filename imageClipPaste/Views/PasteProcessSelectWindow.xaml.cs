@@ -1,5 +1,4 @@
-﻿using MahApps.Metro.Controls;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,7 +17,7 @@ namespace imageClipPaste.Views
     /// <summary>
     /// PasteProcessSelectWindow.xaml の相互作用ロジック
     /// </summary>
-    public partial class PasteProcessSelectWindow : MetroWindow
+    public partial class PasteProcessSelectWindow : MahApps.Metro.Controls.MetroWindow
     {
         public PasteProcessSelectWindow()
         {
