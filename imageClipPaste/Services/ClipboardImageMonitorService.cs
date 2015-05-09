@@ -88,6 +88,7 @@ namespace imageClipPaste.Services
                 MonitorExecutor.Join();
                 IsEnabled = false;
             }
+            logger.Debug("監視タスクを停止しました。");
         }
 
         /// <summary>
