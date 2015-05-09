@@ -25,6 +25,16 @@ namespace imageClipPaste.ViewModel
             get { return intervalMilliseconds; }
             set { Set(ref intervalMilliseconds, value); }
         }
+
+        /// <summary>
+        /// Excel貼り付け設定
+        /// </summary>
+        private Settings.PasteExcelSetting excelSetting;
+        public Settings.PasteExcelSetting ExcelSetting
+        {
+            get { return excelSetting; }
+            set { Set(ref excelSetting, value); }
+        }
         #endregion
 
         #region Commands
@@ -41,6 +51,7 @@ namespace imageClipPaste.ViewModel
                     // アプリケーション設定を、Settingsオブジェクトに設定します
                     Properties.Settings.Default.Setting.ClipboardMonitorInterval = 
                         TimeSpan.FromMilliseconds(IntervalMilliseconds);
+                    Properties.Settings.Default.Setting.ExcelSetting = ExcelSetting;
                 });
             }
         }
@@ -54,6 +65,8 @@ namespace imageClipPaste.ViewModel
             // アプリケーションの設定を読み込む
             IntervalMilliseconds = 
                 Properties.Settings.Default.Setting.ClipboardMonitorInterval.Milliseconds;
+            ExcelSetting =
+                Properties.Settings.Default.Setting.ExcelSetting;
         }
 
         /// <summary>

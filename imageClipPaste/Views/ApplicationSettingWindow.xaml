@@ -22,30 +22,32 @@
         </ObjectDataProvider>
         -->
         
-        <!-- GroupBoxのStyle初期化 -->
+        <!-- Style初期化 -->
         <Style TargetType="GroupBox" />
         <Style TargetType="Slider" />
     </Window.Resources>
     
-    <StackPanel>
-        <Grid Margin="20, 6, 20, 10">
+    <StackPanel Margin="15, 6, 15, 0">
+        <Label Content="アプリケーション全般" Style="{StaticResource HeaderLabelStyle}" />
+
+        <Grid Margin="15, 0, 0, 0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="110" />
+                <ColumnDefinition Width="90" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="42" />
+                <RowDefinition Height="30" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <Label Grid.Row="0" Grid.Column="0" VerticalContentAlignment="Center" Content="監視間隔(ms): " />
+            <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Text="監視間隔(ms): " />
             <Slider Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Value="{Binding IntervalMilliseconds}"
-                    Margin="30, 8, 0, 0"
+                    Margin="20, 8, 0, 0"
                     Minimum="100" Maximum="1000" 
                     TickFrequency="100" IsSnapToTickEnabled="True"
                     TickPlacement="BottomRight" AutoToolTipPlacement="TopLeft"/>
-            <Label Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="0, 0, 0, 0"
-                   Content="{Binding IntervalMilliseconds, Mode=OneWay}" IsHitTestVisible="False" />
+            <TextBlock Grid.Row="0" Grid.Column="1" VerticalAlignment="Center"
+                   Text="{Binding IntervalMilliseconds, Mode=OneWay}" IsHitTestVisible="False" />
             
             <!--
             <Label Grid.Row="1" Grid.Column="0" VerticalContentAlignment="Center" Content="画像の貼り付け先: " />
@@ -61,23 +63,16 @@
             -->
         </Grid>
 
-        <Label Content="Excelへの貼り付け設定" />
+        <Separator Opacity="0" Height="10"/>
+
+        <Label Content="Excelへの貼り付け" Style="{StaticResource HeaderLabelStyle}" />
+        <StackPanel Margin="15, 5, 0, 0">
+            <CheckBox Content="アクティブなセルを画像の下に移動する" IsChecked="{Binding ExcelSetting.MoveActiveCellInImageBelow}" />
+        </StackPanel>
         
-        
-        
-        <GroupBox Header="Excelへの貼り付け設定" Margin="20, 0, 20, 10">
-            <StackPanel>
-                <Label Content="画像を貼り付けた後の動作" />
-                
-            </StackPanel>
-            
-        </GroupBox>
-        
-        <GroupBox Header="PowerPointへの貼り付け設定" Margin="20, 0, 20, 10">
-            <Label Content="aa" />
-        </GroupBox>
-        
-        <StackPanel Margin="20, 10, 20, 20" Orientation="Horizontal" HorizontalAlignment="Right">
+        <Separator Opacity="0" Height="20"/>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
             <Button>
                 <Button.Content>OK</Button.Content>
                 <i:Interaction.Triggers>
@@ -93,5 +88,7 @@
                     Command="{StaticResource CloseCancelWindowCommand}"
                     CommandParameter="{Binding Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"/>
         </StackPanel>
+
+        <Separator Opacity="0" Height="15"/>
     </StackPanel>
 </Controls:MetroWindow>
