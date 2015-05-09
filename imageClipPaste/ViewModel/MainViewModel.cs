@@ -6,6 +6,7 @@ using imageClipPaste.Services;
 using imageClipPaste.Views.Dialog;
 using System;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 
 namespace imageClipPaste.ViewModel
 {
@@ -55,33 +56,7 @@ namespace imageClipPaste.ViewModel
         {
             get
             {
-                return onSwitchClipboardMonitorCommand = onSwitchClipboardMonitorCommand ?? new RelayCommand(() =>
-                {
-                    if (_clipboardMonitorService.IsEnabled)
-                    {
-                        _clipboardMonitorService.Stop();
-                        CleanupImagePaste();
-                        PasteType = Enums.PasteType.NoSelect;
-                    }
-                    else
-                    {
-                        // 画像の貼り付け先を選択し、選択結果をアプリケーション設定に保持します
-                        var dialogResult = 
-                            _windowService.ShowDialog<Views.PasteProcessSelectWindow>(() => {
-                                ViewModelLocator.CleanupPasteProcessSelect();
-                            }).Value;
-                        if (!dialogResult)
-                            return;
-
-                        PasteType = Properties.Settings.Default.Setting.CurrentPasteProcessInfo.PasteType;
-
-                        // 貼り付け処理を実行するインスタンスを取得し、
-                        // クリップボードの監視を開始します
-                        _imagePaste = ImagePasteFactory.Create(Properties.Settings.Default.Setting);
-                        _clipboardMonitorService.Start();
-                    }
-                    IsEnableMonitor = _clipboardMonitorService.IsEnabled;
-                });
+                return onSwitchClipboardMonitorCommand = onSwitchClipboardMonitorCommand ?? new RelayCommand(SwitchClipboardMonitor);
             }
         }
 
@@ -100,6 +75,7 @@ namespace imageClipPaste.ViewModel
 
                     // 設定値を反映する
                     _clipboardMonitorService.Interval = Properties.Settings.Default.Setting.ClipboardMonitorInterval;
+                    _processMonitorTimer.Interval = Properties.Settings.Default.Setting.ClipboardMonitorInterval;
                 }, () => { return !IsEnableMonitor; });
             }
         }
@@ -114,6 +90,9 @@ namespace imageClipPaste.ViewModel
         /// <summary>画像を貼り付けを行う</summary>
         private IImagePaste _imagePaste;
 
+        /// <summary>貼り付け先プロセスの生存を確認するタイマー</summary>
+        private DispatcherTimer _processMonitorTimer;
+
         /// <summary>
         /// コンストラクタ
         /// </summary>
@@ -121,13 +100,18 @@ namespace imageClipPaste.ViewModel
         {
             // クリップボード監視サービスを初期化する
             _clipboardMonitorService = clipboardMonitor;
-            _clipboardMonitorService.Interval = TimeSpan.FromMilliseconds(1000);
+            _clipboardMonitorService.Interval = Properties.Settings.Default.Setting.ClipboardMonitorInterval;
             _clipboardMonitorService.CapturedNewerImage += imageWatcher_CapturedNewerImage;
+
+            // 貼り付け先プロセスの生存確認タイマーを初期化する
+            _processMonitorTimer = new DispatcherTimer();
+            _processMonitorTimer.Interval = Properties.Settings.Default.Setting.ClipboardMonitorInterval;
+            _processMonitorTimer.Tick += _processMonitorTimer_Tick;
 
             _windowService = windowService;
             _imagePaste = null;
 
-            PasteType = Enums.PasteType.NoSelect;
+            PasteType = PasteType.NoSelect;
         }
 
         /// <summary>
@@ -135,10 +119,15 @@ namespace imageClipPaste.ViewModel
         /// </summary>
         public override void Cleanup()
         {
+            _processMonitorTimer.Stop();
+            _processMonitorTimer.Tick -= _processMonitorTimer_Tick;
+
             _clipboardMonitorService.Stop();
             _clipboardMonitorService.CapturedNewerImage -= imageWatcher_CapturedNewerImage;
             _clipboardMonitorService.Dispose();
+
             CleanupImagePaste();
+
             base.Cleanup();
         }
 
@@ -161,11 +150,51 @@ namespace imageClipPaste.ViewModel
         {
             CapturedImage = e.newImage;
             _imagePaste.Paste(e.newImage);
+        }
 
-            // 画像が貼り付けられないときは、監視を停止します
-            // 貼り付け先のプロセスが無いとき。
+        /// <summary>
+        /// 貼り付け先プロセス生存確認タイマーイベント
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void _processMonitorTimer_Tick(object sender, EventArgs e)
+        {
+            // 画像が貼り付け不可のときは、監視を停止します
             if (!_imagePaste.IsPastable)
+                SwitchClipboardMonitor();
+        }
+
+        /// <summary>
+        /// クリップボードの監視を切り替えます
+        /// </summary>
+        private void SwitchClipboardMonitor()
+        {
+            if (_clipboardMonitorService.IsEnabled)
+            {
+                _processMonitorTimer.Stop();
                 _clipboardMonitorService.Stop();
+                CleanupImagePaste();
+                PasteType = PasteType.NoSelect;
+            }
+            else
+            {
+                // 画像の貼り付け先を選択し、選択結果をアプリケーション設定に保持します
+                var dialogResult =
+                    _windowService.ShowDialog<Views.PasteProcessSelectWindow>(() => {
+                        ViewModelLocator.CleanupPasteProcessSelect();
+                    }).Value;
+                if (!dialogResult)
+                    return;
+
+                PasteType = Properties.Settings.Default.Setting.CurrentPasteProcessInfo.PasteType;
+
+                // 貼り付け処理を実行するインスタンスを取得し、
+                // クリップボードの監視を開始します
+                _imagePaste = ImagePasteFactory.Create(Properties.Settings.Default.Setting);
+                _processMonitorTimer.Start();
+                _clipboardMonitorService.Start();
+            }
+            IsEnableMonitor = _clipboardMonitorService.IsEnabled;
         }
     }
 }
