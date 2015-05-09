@@ -73,6 +73,7 @@
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Runtime">
       <HintPath>..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.1\Facades\System.Runtime.dll</HintPath>
@@ -103,6 +104,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AppSetting.cs" />
     <Compile Include="Enums\Enum.cs" />
     <Compile Include="Interfaces\IImageMonitor.cs" />
     <Compile Include="Interfaces\IImagePaste.cs" />
@@ -130,6 +132,7 @@
     <Compile Include="Views\Commands\CloseCancelWindowCommand.cs" />
     <Compile Include="Views\Commands\CloseWindowCommand.cs" />
     <Compile Include="Views\Commands\CommandExtension.cs" />
+    <Compile Include="Views\Converters\AndBooleanMultiValueConverter.cs" />
     <Compile Include="Views\Converters\EnumDescriptionConverter.cs" />
     <Compile Include="Views\Dialog\IWindowService.cs" />
     <Compile Include="Views\Dialog\ModalDialogService.cs" />
