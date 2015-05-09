@@ -75,7 +75,7 @@ namespace imageClipPaste.Models.Clipboard
         /// </summary>
         /// <param name="imageSource">Clipboardから取得したBitmapSource</param>
         /// <returns>アルファ値を調整したBitmapSource</returns>
-        public static BitmapSource AdjustAGBRBitmapSource(BitmapSource imageSource)
+        private static BitmapSource AdjustAGBRBitmapSource(BitmapSource imageSource)
         {
             // WpfのGetImageから取得した画像データは、アルファ値が全て 0に設定されている。
             // Encode/Decodeをかけて正常な画像に変換します。
