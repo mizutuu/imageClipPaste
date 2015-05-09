@@ -2,6 +2,7 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using imageClipPaste.Enums;
 using imageClipPaste.Interfaces;
+using imageClipPaste.Models.Office;
 using imageClipPaste.Services;
 using imageClipPaste.Views.Dialog;
 using System;
@@ -56,7 +57,9 @@ namespace imageClipPaste.ViewModel
         {
             get
             {
-                return onSwitchClipboardMonitorCommand = onSwitchClipboardMonitorCommand ?? new RelayCommand(SwitchClipboardMonitor);
+                return onSwitchClipboardMonitorCommand = onSwitchClipboardMonitorCommand ?? new RelayCommand(
+                    SwitchClipboardMonitor,
+                    () => ExcelModel.IsInstalledExcel());
             }
         }
 
