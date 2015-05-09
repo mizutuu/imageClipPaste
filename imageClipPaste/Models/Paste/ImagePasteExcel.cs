@@ -1,6 +1,9 @@
 ﻿using imageClipPaste.Interfaces;
+using imageClipPaste.Models.Office;
+using NLog;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -31,6 +34,9 @@ namespace imageClipPaste.Models.Paste
             }
         }
 
+        /// <summary>NLog</summary>
+        private static Logger _logger = LogManager.GetCurrentClassLogger();
+
         /// <summary>貼り付け設定</summary>
         private Settings.PasteExcelSetting _setting;
 
@@ -38,10 +44,13 @@ namespace imageClipPaste.Models.Paste
         private Settings.PasteProcessInfo _process;
 
         /// <summary>Excelアプリケーション</summary>
-        private NetOffice.ExcelApi.Application _xlsApplication;
+        private Excel.Application _xlsApplication;
 
         /// <summary>Excelアプリケーション配下のワークブック</summary>
-        private NetOffice.ExcelApi.Workbook _xlsWorkBook;
+        private Excel.Workbook _xlsWorkBook;
+
+        /// <summary>Excel貼り付けのための一時保存先</summary>
+        private string _tempImagePath;
 
         /// <summary>
         /// コンストラクタ
@@ -54,6 +63,7 @@ namespace imageClipPaste.Models.Paste
             _process = process;
             _xlsApplication = GetExcelApplication(process);
             _xlsWorkBook = GetExcelWorkBook(_xlsApplication, process);
+            _tempImagePath = Path.GetTempFileName();
         }
 
         /// <summary>
@@ -62,7 +72,11 @@ namespace imageClipPaste.Models.Paste
         private bool IsAlivePasteProcess()
         {
             if (_xlsApplication == null || _xlsWorkBook == null)
+            {
+                _logger.Debug("プロセス生存確認 Application: {0}, WorkBook: {1}",
+                    _xlsApplication == null, _xlsWorkBook == null);
                 return false;
+            }
 
             // 見た限り、ExcelのApplicationになさそうだったので、
             // プロセスが無いときにRPCエラーとなることを利用しています。
@@ -71,12 +85,13 @@ namespace imageClipPaste.Models.Paste
                 var dummy = _xlsApplication.Visible;
                 dummy = _xlsWorkBook.ReadOnly;
             }
-            catch (COMException)
+            catch (COMException ex)
             {
+                _logger.Debug("プロセス生存確認", ex);
                 return false;
             }
 
-            return false;
+            return true;
         }
 
         /// <summary>
@@ -88,11 +103,11 @@ namespace imageClipPaste.Models.Paste
         {
             if (process.IsRequiredNew)
             {
-                return Office.ExcelModel.NewExcelApplication();
+                return ExcelModel.GetExcelApplication();
             }
             else
             {
-                return Office.ExcelModel.FindExcelApplication(process.HInstance, process.HWnd);
+                return ExcelModel.FindExcelApplication(process.HInstance, process.HWnd);
             }
         }
 
@@ -102,19 +117,18 @@ namespace imageClipPaste.Models.Paste
         /// <param name="app"></param>
         /// <param name="process"></param>
         /// <returns></returns>
-        private Excel.Workbook GetExcelWorkBook(NetOffice.ExcelApi.Application app, Settings.PasteProcessInfo process)
+        private Excel.Workbook GetExcelWorkBook(Excel.Application app, Settings.PasteProcessInfo process)
         {
             if (app == null)
                 return null;
 
             if (process.IsRequiredNew)
             {
-                // 新しいワークブックの場合は、アクティブブックを返却する
-                return app.ActiveWorkbook;
+                return app.Workbooks.Add();
             }
             else
             {
-                return Office.ExcelModel.FindExcelWorkbook(app, process.Name);
+                return ExcelModel.FindExcelWorkbook(app, process.Name);
             }
         }
 
@@ -127,32 +141,43 @@ namespace imageClipPaste.Models.Paste
             if (!IsPastable)
                 return;
 
-            using (var activeSheet = _xlsApplication.ActiveSheet as NetOffice.ExcelApi.Worksheet)
+            // Excel貼り付けのため、ファイルに保存します。
+            SavePngFile(image, _tempImagePath);
+
+            // 画像を貼り付けた後、アクティブセルを画像の下に移動するため、
+            // 貼り付け先のワークシートをアクティブ化します。
+            // このとき、シートの切り替わりを目立たなくさせるためにScreenUpdatingもfalseに設定します。
+            using (var activeSheetInApplication = _xlsApplication.ActiveSheet as Excel.Worksheet)
             {
+                var screenUpdating = _xlsApplication.ScreenUpdating;
+                _xlsApplication.ScreenUpdating = false;
 
-                return;
-
-                using (var activeCell = activeSheet.Cells)
+                using (var activeSheet = _xlsWorkBook.ActiveSheet as Excel.Worksheet)
                 {
-                    
+                    activeSheet.Activate();
+                    ExcelModel.AddShapeFromImageFile(activeSheet, _tempImagePath);
+                    _logger.Trace("{0}.{1} に貼り付けました。File: {2}", _xlsWorkBook.Name, activeSheet.Name, _tempImagePath);
+
+
                 }
 
-                float left = 0,
-                      top = 0;
-                // width, heightは、追加後にScaleを調整するので 0を指定します。
-                using (var shape = activeSheet.Shapes.AddPicture(
-                    ""/*image path*/,
-                    NetOffice.OfficeApi.Enums.MsoTriState.msoFalse,
-                    NetOffice.OfficeApi.Enums.MsoTriState.msoTrue,
-                    left,
-                    top,
-                    0,  // width はゼロ指定
-                    0)) // height はゼロ指定
-                {
-                    // 貼り付けた画像の、拡大/縮小率を100%に設定します。
-                    shape.ScaleHeight(1, NetOffice.OfficeApi.Enums.MsoTriState.msoTrue);
-                    shape.ScaleWidth(1, NetOffice.OfficeApi.Enums.MsoTriState.msoTrue);
-                }
+                activeSheetInApplication.Activate();
+                _xlsApplication.ScreenUpdating = screenUpdating;
+            }
+        }
+
+        /// <summary>
+        /// Png形式でBitmapImageをファイルに保存します
+        /// </summary>
+        /// <param name="image">保存するBitmapImage</param>
+        /// <param name="path">保存先</param>
+        protected static void SavePngFile(BitmapImage image, string path)
+        {
+            using (var stream = new FileStream(path, FileMode.Create))
+            {
+                var encode = new PngBitmapEncoder();
+                encode.Frames.Add(BitmapFrame.Create(image));
+                encode.Save(stream);
             }
         }
 
@@ -176,6 +201,10 @@ namespace imageClipPaste.Models.Paste
                 {
                     _xlsApplication.Dispose();
                     _xlsApplication = null;
+                }
+                if (File.Exists(_tempImagePath))
+                {
+                    File.Delete(_tempImagePath);
                 }
             }
 
