@@ -12,6 +12,17 @@ namespace imageClipPaste.Settings
     [Serializable]
     public class PasteExcelSetting
     {
-        
+        /// <summary>
+        /// 画像を貼り付けたあとで、アクティブなセルを画像の下に移動する
+        /// </summary>
+        public bool MoveActiveCellInImageBelow { get; set; }
+
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
+        public PasteExcelSetting()
+        {
+            MoveActiveCellInImageBelow = true;
+        }
     }
 }
