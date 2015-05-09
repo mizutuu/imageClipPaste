@@ -51,6 +51,12 @@
             
             <!-- for MVVM Light Toolkit -->
             <vm:ViewModelLocator x:Key="Locator" d:IsDataSource="True" xmlns:vm="clr-namespace:imageClipPaste.ViewModel" />
+            
+            <!-- Label/TextBlock Style -->
+            <Style TargetType="Label" x:Key="HeaderLabelStyle" BasedOn="{StaticResource MetroLabel}">
+                <Setter Property="FontSize" Value="{StaticResource NormalFontSize}" />
+                <Setter Property="Foreground" Value="{StaticResource HighlightBrush}" />
+            </Style>
         </ResourceDictionary>
   </Application.Resources>
 </Application>
