@@ -16,6 +16,16 @@ namespace imageClipPaste.Models.Office
         private static Logger _logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
+        /// Excelのインストール状況を取得します
+        /// </summary>
+        /// <returns></returns>
+        public static bool IsInstalledExcel()
+        {
+            Type officeType = Type.GetTypeFromProgID("Excel.Application");
+            return officeType != null;
+        }
+
+        /// <summary>
         /// 新しいExcelアプリケーションを取得します
         /// </summary>
         /// <returns>
