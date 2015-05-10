@@ -150,9 +150,10 @@ namespace imageClipPaste.Models.Office
         /// </summary>
         /// <param name="sheet">貼り付け先のワークシート</param>
         /// <param name="path">貼り付ける画像ファイルパス</param>
-        public static void AddShapeFromImageFile(Excel.Worksheet sheet, string path)
+        /// <returns></returns>
+        public static Excel.Shape AddShapeFromImageFile(Excel.Worksheet sheet, string path)
         {
-            AddShapeFromImageFile(sheet, path, 0, 0);
+            return AddShapeFromImageFile(sheet, path, 0, 0);
         }
 
         /// <summary>
@@ -162,24 +163,26 @@ namespace imageClipPaste.Models.Office
         /// <param name="path">貼り付ける画像ファイルパス</param>
         /// <param name="top">Top座標</param>
         /// <param name="left">Left座標</param>
-        public static void AddShapeFromImageFile(Excel.Worksheet sheet, string path, int top, int left)
+        /// <returns></returns>
+        public static Excel.Shape AddShapeFromImageFile(Excel.Worksheet sheet, string path, float top, float left)
         {
             // width, heightは、追加後にScaleを調整するので 0を指定します。
             float width = 0, height = 0;
 
-            using (var shape = sheet.Shapes.AddPicture(
+            var shape = sheet.Shapes.AddPicture(
                 path,
                 NetOffice.OfficeApi.Enums.MsoTriState.msoFalse,
                 NetOffice.OfficeApi.Enums.MsoTriState.msoTrue,
                 left,
                 top,
                 width,
-                height))
-            {
-                // 貼り付けた画像の、拡大/縮小率を100%に設定します。
-                shape.ScaleHeight(1, NetOffice.OfficeApi.Enums.MsoTriState.msoTrue);
-                shape.ScaleWidth(1, NetOffice.OfficeApi.Enums.MsoTriState.msoTrue);
-            }
+                height);
+            
+            // 貼り付けた画像の、拡大/縮小率を100%に設定します。
+            shape.ScaleHeight(1, NetOffice.OfficeApi.Enums.MsoTriState.msoTrue);
+            shape.ScaleWidth(1, NetOffice.OfficeApi.Enums.MsoTriState.msoTrue);
+
+            return shape;
         }
     }
 }
