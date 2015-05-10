@@ -10,7 +10,7 @@
     mc:Ignorable="d"
     BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness="1"
     ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterOwner"
-    Title="オプション" Height="300" Width="300"
+    Title="オプション" Height="300" Width="320"
     DataContext="{Binding ApplicationSetting, Source={StaticResource Locator}}" SizeToContent="Height">
     
     <Window.Resources>
@@ -42,7 +42,7 @@
 
             <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Text="監視間隔(ms): " />
             <Slider Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Value="{Binding IntervalMilliseconds}"
-                    Margin="20, 8, 0, 0"
+                    Margin="22, 8, 0, 0"
                     Minimum="100" Maximum="1000" 
                     TickFrequency="100" IsSnapToTickEnabled="True"
                     TickPlacement="BottomRight" AutoToolTipPlacement="TopLeft"/>
@@ -67,7 +67,7 @@
 
         <Label Content="Excelへの貼り付け" Style="{StaticResource HeaderLabelStyle}" />
         <StackPanel Margin="15, 5, 0, 0">
-            <CheckBox Content="アクティブなセルを画像の下に移動する" IsChecked="{Binding ExcelSetting.MoveActiveCellInImageBelow}" />
+            <CheckBox Content="貼り付け後、アクティブセルを画像の下に移動する" IsChecked="{Binding ExcelSetting.MoveActiveCellInImageBelow}" />
         </StackPanel>
         
         <Separator Opacity="0" Height="20"/>
