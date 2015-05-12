@@ -77,8 +77,10 @@ namespace imageClipPaste.ViewModel
                     _windowService.ShowDialog<Views.ApplicationSettingWindow>();
 
                     // 設定値を反映する
-                    _clipboardMonitorService.Interval = Properties.Settings.Default.Setting.ClipboardMonitorInterval;
-                    _processMonitorTimer.Interval = Properties.Settings.Default.Setting.ClipboardMonitorInterval;
+                    var interval = TimeSpan.FromMilliseconds(
+                        Properties.Settings.Default.Setting.ClipboardMonitorIntervalMilliseconds);
+                    _clipboardMonitorService.Interval = interval;
+                    _processMonitorTimer.Interval = interval;
                 }, () => { return !IsEnableMonitor; });
             }
         }
@@ -101,14 +103,17 @@ namespace imageClipPaste.ViewModel
         /// </summary>
         public MainViewModel(IImageMonitor clipboardMonitor, IWindowService windowService)
         {
+            var interval = TimeSpan.FromMilliseconds(
+                Properties.Settings.Default.Setting.ClipboardMonitorIntervalMilliseconds);
+
             // クリップボード監視サービスを初期化する
             _clipboardMonitorService = clipboardMonitor;
-            _clipboardMonitorService.Interval = Properties.Settings.Default.Setting.ClipboardMonitorInterval;
+            _clipboardMonitorService.Interval = interval;
             _clipboardMonitorService.CapturedNewerImage += imageWatcher_CapturedNewerImage;
 
             // 貼り付け先プロセスの生存確認タイマーを初期化する
             _processMonitorTimer = new DispatcherTimer();
-            _processMonitorTimer.Interval = Properties.Settings.Default.Setting.ClipboardMonitorInterval;
+            _processMonitorTimer.Interval = interval;
             _processMonitorTimer.Tick += _processMonitorTimer_Tick;
 
             _windowService = windowService;

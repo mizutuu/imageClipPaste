@@ -1,12 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
-using imageClipPaste.Enums;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 
 namespace imageClipPaste.ViewModel
 {
@@ -49,9 +43,11 @@ namespace imageClipPaste.ViewModel
                 return onOkCommand = onOkCommand ?? new RelayCommand(() =>
                 {
                     // アプリケーション設定を、Settingsオブジェクトに設定します
-                    Properties.Settings.Default.Setting.ClipboardMonitorInterval = 
-                        TimeSpan.FromMilliseconds(IntervalMilliseconds);
+                    Properties.Settings.Default.Setting.ClipboardMonitorIntervalMilliseconds = 
+                        IntervalMilliseconds;
                     Properties.Settings.Default.Setting.ExcelSetting = ExcelSetting;
+
+                    Properties.Settings.Default.Save();
                 });
             }
         }
@@ -64,7 +60,7 @@ namespace imageClipPaste.ViewModel
         {
             // アプリケーションの設定を読み込む
             IntervalMilliseconds = 
-                Properties.Settings.Default.Setting.ClipboardMonitorInterval.Milliseconds;
+                Properties.Settings.Default.Setting.ClipboardMonitorIntervalMilliseconds;
             ExcelSetting =
                 Properties.Settings.Default.Setting.ExcelSetting;
         }
