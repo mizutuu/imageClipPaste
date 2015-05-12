@@ -10,9 +10,9 @@ using System.Windows;
 [assembly: AssemblyTitle("imageClipPaste")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("imageClipPaste")]
 [assembly: AssemblyProduct("imageClipPaste")]
-[assembly: AssemblyCopyright("Copyright ©  2015")]
+[assembly: AssemblyCopyright("Copyright ©  2015 Mizutuu All rights reserved.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
