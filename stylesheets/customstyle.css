@@ -1,0 +1,31 @@
+body {
+  font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "メイリオ", Meiryo, "MS ゴシック", "MS Gothic", sans-serif;
+}
+.btn {
+  color: rgba(255, 255, 255, 0.9);
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+  font-weight: bold;
+}
+.main-content h1, .main-content h2, .main-content h3, .main-content h4, .main-content h5, .main-content h6 {
+  color: #1C84B0;
+}
+.page-header {
+  background: -moz-linear-gradient(-45deg, rgba(28,132,176,1) 0%, rgba(242,242,242,0.15) 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,rgba(28,132,176,1)), color-stop(100%,rgba(242,242,242,0.15))); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(-45deg, rgba(28,132,176,1) 0%,rgba(242,242,242,0.15) 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(-45deg, rgba(28,132,176,1) 0%,rgba(242,242,242,0.15) 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(-45deg, rgba(28,132,176,1) 0%,rgba(242,242,242,0.15) 100%); /* IE10+ */
+  background: linear-gradient(135deg, rgba(28,132,176,1) 0%,rgba(242,242,242,0.15) 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1c84b0', endColorstr='#26f2f2f2',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+}
+@media screen and (min-width: 64em) {
+  .page-header {
+    padding: 5rem 6rem 3rem 6rem;
+  }
+}
+@media screen and (min-width: 64em) {
+  .btn {
+    padding: 1.2rem 3rem;
+  }
+}
