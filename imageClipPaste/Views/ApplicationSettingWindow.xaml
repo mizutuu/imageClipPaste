@@ -42,7 +42,7 @@
 
             <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Text="監視間隔(ms): " />
             <Slider Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Value="{Binding IntervalMilliseconds}"
-                    Margin="22, 8, 0, 0"
+                    Margin="30, 8, 0, 0"
                     Minimum="100" Maximum="1000" 
                     TickFrequency="100" IsSnapToTickEnabled="True"
                     TickPlacement="BottomRight" AutoToolTipPlacement="TopLeft"/>
