@@ -1,13 +1,8 @@
-﻿using imageClipPaste.Interfaces;
-using imageClipPaste.Models.Office;
+﻿using imageClipPaste.Models.Office;
 using NLog;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using Excel = NetOffice.ExcelApi;
 
@@ -154,24 +149,29 @@ namespace imageClipPaste.Models.Paste
 
                 using (var activeSheet = _xlsWorkBook.ActiveSheet as Excel.Worksheet)
                 {
+                    float top, left;
+                    int activeColumn;
+
                     // 貼り付け先のワークシートをアクティブ化してからアクティブセルを取得
                     activeSheet.Activate();
                     using (var activeCell = _xlsApplication.ActiveCell)
                     {
-                        float top = Convert.ToSingle(activeCell.Top),
-                              left = Convert.ToSingle(activeCell.Left);
-                        using (var shape = ExcelModel.AddShapeFromImageFile(activeSheet, _tempImagePath, top, left))
-                        {
-                            _logger.Trace("{0}.{1} に貼り付けました。File: {2}", _xlsWorkBook.Name, activeSheet.Name, _tempImagePath);
+                        top = Convert.ToSingle(activeCell.Top);
+                        left = Convert.ToSingle(activeCell.Left);
+                        activeColumn = activeCell.Column;
+                    }
 
-                            if (_setting.MoveActiveCellInImageBelow)
+                    using (var shape = ExcelModel.AddShapeFromImageFile(activeSheet, _tempImagePath, top, left))
+                    {
+                        _logger.Trace("{0}.{1} に貼り付けました。File: {2}", _xlsWorkBook.Name, activeSheet.Name, _tempImagePath);
+
+                        if (_setting.MoveActiveCellInImageBelow)
+                        {
+                            using (var bottomRightCell = shape.BottomRightCell)
                             {
-                                using (var bottomRightCell = shape.BottomRightCell)
-                                {
-                                    int nextRow = bottomRightCell.Row + 2,
-                                        nextColumn = activeCell.Column;
-                                    activeSheet.Cells[nextRow, nextColumn].Activate();
-                                }
+                                int nextRow = bottomRightCell.Row + 2,
+                                    nextColumn = activeColumn;
+                                activeSheet.Cells[nextRow, nextColumn].Activate();
                             }
                         }
                     }
