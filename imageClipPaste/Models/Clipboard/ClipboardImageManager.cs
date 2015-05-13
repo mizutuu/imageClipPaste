@@ -2,6 +2,7 @@
 using NLog;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
@@ -32,7 +33,17 @@ namespace imageClipPaste.Models.Clipboard
                 return null;
 
             // クリップボードのデータを取得する
-            BitmapSource clipboardImage = System.Windows.Clipboard.GetImage();
+            BitmapSource clipboardImage;
+            try
+            {
+                clipboardImage = System.Windows.Clipboard.GetImage();
+            }
+            catch (COMException)
+            {
+                // クリップボードから画像を取得する際に、時々失敗することがある。
+                // その時は、次回処理に任せる。
+                return null;
+            }
 
             // クリップボードから取得した画像のアルファ値を調整する。
             var clipImageSource = AdjustAGBRBitmapSource(clipboardImage);
