@@ -143,36 +143,37 @@ namespace imageClipPaste.Models.Paste
             // 貼り付け先のワークシートをアクティブ化します。
             // このとき、シートの切り替わりを目立たなくさせるためにScreenUpdatingをオフにします。
             using (var activeSheetInApplication = _xlsApplication.ActiveSheet as Excel.Worksheet)
+            using (var activeSheet = _xlsWorkBook.ActiveSheet as Excel.Worksheet)
             {
                 var screenUpdating = _xlsApplication.ScreenUpdating;
                 _xlsApplication.ScreenUpdating = false;
 
-                using (var activeSheet = _xlsWorkBook.ActiveSheet as Excel.Worksheet)
+                // 貼り付け先のワークシートをアクティブ化してからアクティブセルを取得
+                activeSheet.Activate();
+                using (var activeCell = _xlsApplication.ActiveCell)
+                using (var shape = ExcelModel.AddShapeFromImageFile(activeSheet, _tempImagePath,
+                    Convert.ToSingle(activeCell.Top), Convert.ToSingle(activeCell.Left)))
                 {
-                    float top, left;
-                    int activeColumn;
+                    _logger.Trace("{0}.{1} に貼り付けました。File: {2}", _xlsWorkBook.Name, activeSheet.Name, _tempImagePath);
 
-                    // 貼り付け先のワークシートをアクティブ化してからアクティブセルを取得
-                    activeSheet.Activate();
-                    using (var activeCell = _xlsApplication.ActiveCell)
+                    if (_setting.MoveActiveCellInImageBelow)
                     {
-                        top = Convert.ToSingle(activeCell.Top);
-                        left = Convert.ToSingle(activeCell.Left);
-                        activeColumn = activeCell.Column;
-                    }
-
-                    using (var shape = ExcelModel.AddShapeFromImageFile(activeSheet, _tempImagePath, top, left))
-                    {
-                        _logger.Trace("{0}.{1} に貼り付けました。File: {2}", _xlsWorkBook.Name, activeSheet.Name, _tempImagePath);
-
-                        if (_setting.MoveActiveCellInImageBelow)
+                        using (var bottomRightCell = shape.BottomRightCell)
+                        using (var activeWindow = _xlsApplication.ActiveWindow)
+                        using (var visibleRange = activeWindow.VisibleRange)
                         {
-                            using (var bottomRightCell = shape.BottomRightCell)
-                            {
-                                int nextRow = bottomRightCell.Row + 2,
-                                    nextColumn = activeColumn;
-                                activeSheet.Cells[nextRow, nextColumn].Activate();
-                            }
+                            // 画像の下のセルをアクティブセルに指定します
+                            int nextRow = bottomRightCell.Row + 2,
+                                nextColumn = activeCell.Column;
+                            activeSheet.Cells[nextRow, nextColumn].Select();
+
+                            // セルの表示範囲を超える場合は、上で指定したアクティブセルまでスクロールします
+                            var visibleRows = visibleRange.Count / visibleRange.Column;
+                            if (visibleRows <= 0)
+                                visibleRows = nextRow; // 算出できない場合は、次の行番号とする
+                            var visibleLastRow = visibleRange.Cells[visibleRows].Row;
+                            if (nextRow > visibleLastRow)
+                                activeWindow.ScrollRow += (nextRow - visibleLastRow);
                         }
                     }
                 }
