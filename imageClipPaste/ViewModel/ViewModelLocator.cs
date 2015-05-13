@@ -34,21 +34,10 @@ namespace imageClipPaste.ViewModel
         {
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
-            ////if (ViewModelBase.IsInDesignModeStatic)
-            ////{
-            ////    // Create design time view services and models
-            ////    SimpleIoc.Default.Register<IDataService, DesignDataService>();
-            ////}
-            ////else
-            ////{
-            ////    // Create run time view services and models
-            ////    SimpleIoc.Default.Register<IDataService, DataService>();
-            ////}
-
             // クリップボード監視用サービスを登録
             if (ViewModelBase.IsInDesignModeStatic)
             {
-                // TODO: テスト用スタブサービスの登録
+                // design time view services
             }
             else
             {
@@ -58,7 +47,7 @@ namespace imageClipPaste.ViewModel
             // ダイアログ表示サービスを登録
             if (ViewModelBase.IsInDesignModeStatic)
             {
-                // TODO: テスト用スタブサービスの登録
+                // design time view services
             }
             else
             {
