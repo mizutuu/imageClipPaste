@@ -18,19 +18,19 @@
 
 
 ## 使い方
-#### imageClipPaste を起動します。
+#### 1. imageClipPaste を起動します。
 ![起動画面](https://raw.githubusercontent.com/mizutuu/imageClipPaste/gh-pages/img/usage01.png)
 
-#### クリップボード監視ボタンをクリックします。
+#### 2. クリップボード監視ボタンをクリックします。
 ![初期画面](https://raw.githubusercontent.com/mizutuu/imageClipPaste/gh-pages/img/usage02.png)
 
-#### 貼り付け先のワークブックを選択します。
+#### 3. 貼り付け先のワークブックを選択します。
 ![貼り付け先選択画面](https://raw.githubusercontent.com/mizutuu/imageClipPaste/gh-pages/img/usage03.png)
 
 クリップボード監視中は、クリップボード監視ボタンが明滅します。
 ![監視中画面](https://raw.githubusercontent.com/mizutuu/imageClipPaste/gh-pages/img/usage04.png)
 
-#### 画像をコピーします。
+#### 4. 画像をコピーします。
 * 貼り付け先のワークブックに、コピーした画像が貼り付けられます。
 * ワークブック内の選択されているセルに貼り付けられます。
 
