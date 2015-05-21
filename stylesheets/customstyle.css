@@ -19,6 +19,9 @@ body {
   background: linear-gradient(135deg, rgba(28,132,176,1) 0%,rgba(242,242,242,0.15) 100%); /* W3C */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1c84b0', endColorstr='#26f2f2f2',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
 }
+.page-header img {
+  max-width: 100%;
+}
 @media screen and (min-width: 64em) {
   .page-header {
     padding: 5rem 6rem 3rem 6rem;
