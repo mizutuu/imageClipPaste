@@ -59,6 +59,8 @@
   http://netoffice.codeplex.com/
 * MahApps.Metro
   http://mahapps.com/
+* Modern UI Icons
+  http://modernuiicons.com/
 * MVVM Light Toolkit
   http://www.galasoft.ch/mvvm
 * NLog
