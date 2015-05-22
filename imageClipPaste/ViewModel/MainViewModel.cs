@@ -1,5 +1,4 @@
-using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.CommandWpf;
+using GalaSoft.MvvmLight.Command;
 using imageClipPaste.Enums;
 using imageClipPaste.Interfaces;
 using imageClipPaste.Models.Office;
