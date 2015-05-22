@@ -165,15 +165,18 @@ namespace imageClipPaste.Models.Paste
                             // 画像の下のセルをアクティブセルに指定します
                             int nextRow = bottomRightCell.Row + 2,
                                 nextColumn = activeCell.Column;
-                            activeSheet.Cells[nextRow, nextColumn].Select();
+                            if (nextRow <= activeSheet.Cells.Rows.Count)
+                            {
+                                activeSheet.Cells[nextRow, nextColumn].Select();
 
-                            // セルの表示範囲を超える場合は、上で指定したアクティブセルまでスクロールします
-                            var visibleRows = visibleRange.Count / visibleRange.Column;
-                            if (visibleRows <= 0)
-                                visibleRows = nextRow; // 算出できない場合は、次の行番号とする
-                            var visibleLastRow = visibleRange.Cells[visibleRows].Row;
-                            if (nextRow > visibleLastRow)
-                                activeWindow.ScrollRow += (nextRow - visibleLastRow);
+                                // セルの表示範囲を超える場合は、上で指定したアクティブセルまでスクロールします
+                                var visibleRows = visibleRange.Count / visibleRange.Column;
+                                if (visibleRows <= 0)
+                                    visibleRows = nextRow; // 算出できない場合は、次の行番号とする
+                                var visibleLastRow = visibleRange.Cells[visibleRows].Row;
+                                if (nextRow > visibleLastRow)
+                                    activeWindow.ScrollRow += (nextRow - visibleLastRow);
+                            }
                         }
                     }
                 }
