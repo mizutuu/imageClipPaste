@@ -166,8 +166,8 @@ namespace imageClipPaste.ViewModel
         /// <param name="e"></param>
         private void _processMonitorTimer_Tick(object sender, EventArgs e)
         {
-            // 画像が貼り付け不可のときは、監視を停止します
-            if (!_imagePaste.IsPastable)
+            // クリップボード監視タスクが停止したら、監視を停止します
+            if (!_clipboardMonitorService.IsEnabled)
                 SwitchClipboardMonitor();
         }
 
@@ -176,7 +176,7 @@ namespace imageClipPaste.ViewModel
         /// </summary>
         private void SwitchClipboardMonitor()
         {
-            if (_clipboardMonitorService.IsEnabled)
+            if (IsEnableMonitor)
             {
                 _processMonitorTimer.Stop();
                 _clipboardMonitorService.Stop();
