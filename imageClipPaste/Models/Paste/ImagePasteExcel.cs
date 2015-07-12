@@ -134,7 +134,7 @@ namespace imageClipPaste.Models.Paste
         public override void Paste(BitmapImage image)
         {
             if (!IsPastable)
-                return;
+                throw new PasteProcessNotFoundException(_process.ToString());
 
             // Excel貼り付けのため、ファイルに保存します。
             SavePngFile(image, _tempImagePath);
