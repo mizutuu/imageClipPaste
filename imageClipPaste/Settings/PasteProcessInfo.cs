@@ -42,5 +42,10 @@ namespace imageClipPaste.Settings
         {
             IsRequiredNew = false;
         }
+
+        public override string ToString()
+        {
+            return string.Format("{0}, {1}, {2}, {3}, {4}", Name, HInstance, HWnd, PasteType, IsRequiredNew);
+        }
     }
 }
