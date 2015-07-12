@@ -1,5 +1,6 @@
 ﻿using imageClipPaste.Interfaces;
 using imageClipPaste.Models.Clipboard;
+using imageClipPaste.Models.Paste;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -121,6 +122,15 @@ namespace imageClipPaste.Services
                     }
 
                     logger.Debug("監視タスクが正常に終了しました。");
+                }
+                catch (PasteProcessNotFoundException ex)
+                {
+                    logger.Debug(ex);
+                    using (var token = MonitorCancelToken)
+                    {
+                        token.Cancel();
+                        IsEnabled = false;
+                    }
                 }
                 catch (Exception ex)
                 {
