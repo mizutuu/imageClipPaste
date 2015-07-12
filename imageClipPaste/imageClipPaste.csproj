@@ -125,6 +125,7 @@
     <Compile Include="Models\Paste\BaseImagePaste.cs" />
     <Compile Include="Models\Paste\ImagePasteExcel.cs" />
     <Compile Include="Models\Paste\ImagePastePowerPoint.cs" />
+    <Compile Include="Models\Paste\PasteProcessNotFoundException.cs" />
     <Compile Include="Services\BaseImageMonitorService.cs" />
     <Compile Include="Services\ClipboardImageMonitorService.cs" />
     <Compile Include="Services\ImagePasteFactory.cs" />
