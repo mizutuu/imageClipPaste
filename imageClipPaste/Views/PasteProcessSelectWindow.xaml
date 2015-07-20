@@ -62,7 +62,11 @@
                                         </Rectangle.Style>
                                     </Rectangle>
 
-                                    <Label Content="{Binding Name}" />
+                                    <Label>
+                                        <TextBlock Text="{Binding Name}"
+                                                   MaxWidth="260" TextWrapping="NoWrap"
+                                                   TextTrimming="CharacterEllipsis" />
+                                    </Label>
                                 </StackPanel>
                             </Button.Content>
                         </Button>
