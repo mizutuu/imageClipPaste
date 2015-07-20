@@ -102,7 +102,6 @@ namespace imageClipPaste.ViewModel
         /// </summary>
         public static void Cleanup()
         {
-
             // サービスの登録を解除します。
             SimpleIoc.Default.Unregister<ClipboardImageMonitorService>();
             SimpleIoc.Default.Unregister<ModalDialogService>();
@@ -111,8 +110,12 @@ namespace imageClipPaste.ViewModel
             CleanupPasteProcessSelect();
             CleanupApplicationSetting();
 
-            SimpleIoc.Default.GetInstance<MainViewModel>().Cleanup();
-            SimpleIoc.Default.Unregister<MainViewModel>();
+
+            if (SimpleIoc.Default.IsRegistered<MainWindow>())
+            {
+                SimpleIoc.Default.GetInstance<MainViewModel>().Cleanup();
+                SimpleIoc.Default.Unregister<MainViewModel>();
+            }
         }
 
         /// <summary>

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -17,11 +18,25 @@ namespace imageClipPaste
         /// <summary>NLog</summary>
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
+        /// <summary>多重起動管理用のミューテックス</summary>
+        private static Mutex mutex = null;
+
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             // 未処理例外を捕捉する、イベントハンドラを登録します。
             this.DispatcherUnhandledException += App_DispatcherUnhandledException;
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+
+            // 多重起動を防止します。
+            mutex = new Mutex(false, GetType().Assembly.GetName().Name);
+            if (!mutex.WaitOne(TimeSpan.Zero, false))
+            {
+                mutex.Close();
+                Shutdown();
+                return;
+            }
+
+            new MainWindow().Show();
         }
 
         private void Application_Exit(object sender, ExitEventArgs e)
@@ -32,6 +47,13 @@ namespace imageClipPaste
             // 未処理例外イベントハンドラを解除します。
             this.DispatcherUnhandledException -= App_DispatcherUnhandledException;
             AppDomain.CurrentDomain.UnhandledException -= CurrentDomain_UnhandledException;
+
+            // 多重起動ミューテックスを開放します。
+            if (mutex != null)
+            {
+                mutex.ReleaseMutex();
+                mutex.Close();
+            }
         }
 
         /// <summary>

@@ -5,7 +5,6 @@
     xmlns:local="clr-namespace:imageClipPaste"
     xmlns:converter="clr-namespace:imageClipPaste.Views.Converters"
     xmlns:command="clr-namespace:imageClipPaste.Views.Commands"
-    StartupUri="MainWindow.xaml"
     Startup="Application_Startup" 
     Exit="Application_Exit"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
