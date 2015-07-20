@@ -11,7 +11,7 @@
 
 ## 動作環境
 * 環境
- * Windows 7, Windows 8, Windows 8.1 (64bit含む)
+ * Windows 7, Windows 8, Windows 8.1, Windows10 (64bit含む)
  * Excel 2002, Excel 2003, Excel 2007, Excel 2010, Excel 2013
 * 必要なソフトウェア
  * .NET Framework 4以降インストール済み環境
