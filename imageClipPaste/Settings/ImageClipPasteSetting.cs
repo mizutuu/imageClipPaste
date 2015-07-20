@@ -29,11 +29,6 @@ namespace imageClipPaste.Settings
         public bool IsResetClipboard { get; set; }
 
         /// <summary>
-        /// クリップボードリセットを確認する設定
-        /// </summary>
-        public bool IsConfirmResetClipboard { get; set; }
-
-        /// <summary>
         /// Excelに貼り付けるときの設定
         /// </summary>
         public PasteExcelSetting ExcelSetting { get; set; }
@@ -50,8 +45,7 @@ namespace imageClipPaste.Settings
         {
             ClipboardMonitorIntervalMilliseconds = 200;
             CurrentPasteProcessInfo = new PasteProcessInfo();
-            IsResetClipboard = false;
-            IsConfirmResetClipboard = true;
+            IsResetClipboard = true;
             ExcelSetting = new PasteExcelSetting();
             PowerPointSetting = new PastePowerPointSetting();
         }
