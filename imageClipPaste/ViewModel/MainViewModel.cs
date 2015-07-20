@@ -181,6 +181,7 @@ namespace imageClipPaste.ViewModel
                 _processMonitorTimer.Stop();
                 _clipboardMonitorService.Stop();
                 CleanupImagePaste();
+                CapturedImage = null;
                 PasteType = PasteType.NoSelect;
             }
             else
