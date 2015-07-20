@@ -26,47 +26,50 @@
         <Label Content="画像の貼り付け先を選択してください。" />
         <Label Content="ワークブックのアクティブシートに貼り付けられます。" />
 
-        <ItemsControl ItemsSource="{Binding ProcessSource}" Margin="0, 10, 0, 20">
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Button Style="{StaticResource button}" HorizontalContentAlignment="Left">
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="Click">
-                                <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.OnSelectProcess}" CommandParameter="{Binding}"/>
-                                <i:InvokeCommandAction Command="{StaticResource CloseWindowCommand}" CommandParameter="{Binding Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" />
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
-                        <Button.Content>
-                            <StackPanel Orientation="Horizontal">
-                                <Rectangle Grid.Column="2" Width="30" Height="30" Margin="0, 0, 10, 0">
-                                    <Rectangle.Style>
-                                        <Style TargetType="{x:Type Rectangle}">
-                                            <Setter Property="Fill" Value="{StaticResource BlackBrush}" />
-                                            <Setter Property="OpacityMask">
-                                                <Setter.Value>
-                                                    <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_office_excel}" />
-                                                </Setter.Value>
-                                            </Setter>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding PasteType}" Value="{x:Static enums:PasteType.PowerPoint}">
-                                                    <Setter Property="OpacityMask">
-                                                        <Setter.Value>
-                                                            <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_office_powerpoint}" />
-                                                        </Setter.Value>
-                                                    </Setter>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Rectangle.Style>
-                                </Rectangle>
+        <ScrollViewer Margin="0, 10, 0, 20" VerticalScrollBarVisibility="Auto" MaxHeight="500">
+            
+            <ItemsControl ItemsSource="{Binding ProcessSource}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Button Style="{StaticResource button}" HorizontalContentAlignment="Left">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.OnSelectProcess}" CommandParameter="{Binding}"/>
+                                    <i:InvokeCommandAction Command="{StaticResource CloseWindowCommand}" CommandParameter="{Binding Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                            <Button.Content>
+                                <StackPanel Orientation="Horizontal">
+                                    <Rectangle Grid.Column="2" Width="30" Height="30" Margin="0, 0, 10, 0">
+                                        <Rectangle.Style>
+                                            <Style TargetType="{x:Type Rectangle}">
+                                                <Setter Property="Fill" Value="{StaticResource BlackBrush}" />
+                                                <Setter Property="OpacityMask">
+                                                    <Setter.Value>
+                                                        <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_office_excel}" />
+                                                    </Setter.Value>
+                                                </Setter>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding PasteType}" Value="{x:Static enums:PasteType.PowerPoint}">
+                                                        <Setter Property="OpacityMask">
+                                                            <Setter.Value>
+                                                                <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_office_powerpoint}" />
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Rectangle.Style>
+                                    </Rectangle>
 
-                                <Label Content="{Binding Name}" />
-                            </StackPanel>
-                        </Button.Content>
-                    </Button>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+                                    <Label Content="{Binding Name}" />
+                                </StackPanel>
+                            </Button.Content>
+                        </Button>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
 
         <Line StrokeThickness="1" Stretch="Fill" X2="1" Margin="0, 0, 0, 14" Stroke="#33000000" Opacity="0.8">
             <Line.Effect>
