@@ -22,6 +22,20 @@ namespace imageClipPaste.ViewModel
             get { return processSource; }
             set { Set(ref processSource, value); }
         }
+
+        /// <summary>
+        /// クリップボードリセット設定
+        /// </summary>
+        private bool isResetClipboard;
+        public bool IsResetClipboard
+        {
+            get { return isResetClipboard; }
+            set {
+                Set(ref isResetClipboard, value);
+                Properties.Settings.Default.Setting.IsResetClipboard = value;
+                Properties.Settings.Default.Save();
+            }
+        }
         #endregion
 
         #region Commands
@@ -48,6 +62,7 @@ namespace imageClipPaste.ViewModel
             //list.Add(GetNew(PasteType.PowerPoint)); // TODO:
             list.AddRange(GetPasteProcessList(PasteType.Excel));
             ProcessSource = new ObservableCollection<Settings.PasteProcessInfo>(list);
+            IsResetClipboard = Properties.Settings.Default.Setting.IsResetClipboard;
         }
 
         /// <summary>
