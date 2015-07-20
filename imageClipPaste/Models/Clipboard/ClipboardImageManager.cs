@@ -21,6 +21,15 @@ namespace imageClipPaste.Models.Clipboard
         public bool FilterSameImage { get; set; }
 
         /// <summary>
+        /// コンストラクタ
+        /// </summary>
+        public ClipboardImageManager()
+        {
+            if (Properties.Settings.Default.Setting.IsResetClipboard)
+                System.Windows.Clipboard.Clear();
+        }
+
+        /// <summary>
         /// クリップボードから新しい画像を取得します
         /// </summary>
         /// <returns>
