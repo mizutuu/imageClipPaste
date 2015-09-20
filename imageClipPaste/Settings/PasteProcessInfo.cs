@@ -11,27 +11,22 @@ namespace imageClipPaste.Settings
     {
         /// <summary>
         /// Excelの場合はワークブック名
-        /// PowerPointの場合は
+        /// PowerPointの場合はプレゼンテーション名
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        /// インスタンスハンドル
+        /// ワークブック名、プレゼンテーション名を一意に区別できる名前
         /// </summary>
-        public int HInstance { get; set; }
+        public string FullName { get; set; }
 
         /// <summary>
-        /// ウィンドウハンドル
-        /// </summary>
-        public int HWnd { get; set; }
-
-        /// <summary>
-        /// 
+        /// 貼り付けタイプ
         /// </summary>
         public PasteType PasteType { get; set; }
 
         /// <summary>
-        /// 新しいワークブック又は
+        /// 新しいワークブック又は新しいプレゼンテーションフラグ
         /// </summary>
         public bool IsRequiredNew { get; set; }
 
@@ -45,7 +40,7 @@ namespace imageClipPaste.Settings
 
         public override string ToString()
         {
-            return string.Format("{0}, {1}, {2}, {3}, {4}", Name, HInstance, HWnd, PasteType, IsRequiredNew);
+            return string.Format("{0}, {1}, {2}, {3}", Name, FullName, PasteType, IsRequiredNew);
         }
     }
 }

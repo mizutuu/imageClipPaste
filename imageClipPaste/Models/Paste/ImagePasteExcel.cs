@@ -102,7 +102,7 @@ namespace imageClipPaste.Models.Paste
             }
             else
             {
-                return ExcelModel.FindExcelApplication(process.HInstance, process.HWnd);
+                return ExcelModel.FindExcelApplication(process);
             }
         }
 
@@ -123,7 +123,7 @@ namespace imageClipPaste.Models.Paste
             }
             else
             {
-                return ExcelModel.FindExcelWorkbook(app, process.Name);
+                return ExcelModel.FindExcelWorkbook(app, process);
             }
         }
 

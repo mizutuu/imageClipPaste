@@ -21,6 +21,9 @@ namespace imageClipPaste.Interfaces
         /// <summary>監視間隔</summary>
         TimeSpan Interval { get; set; }
 
+        /// <summary>前回と同じ画像の通知をフィルタするかを設定します</summary>
+        bool FilterSameImage { get; set; }
+
         /// <summary>画像の監視を開始します</summary>
         void Start();
 

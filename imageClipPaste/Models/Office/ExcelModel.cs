@@ -50,28 +50,24 @@ namespace imageClipPaste.Models.Office
         /// <summary>
         /// 引数に合致するExcelアプリケーションを取得します
         /// </summary>
-        /// <param name="Hinstance">インスタンスハンドル</param>
-        /// <param name="Hwnd">ウィンドウハンドル</param>
+        /// <param name="info">貼り付け先プロセス情報</param>
         /// <returns>
         /// 合致するExcelアプリケーションが取得できる場合は、取得したExcelアプリケーションを、
         /// 取得できない場合は、nullを返却します
         /// </returns>
-        public static Excel.Application FindExcelApplication(int Hinstance, int Hwnd)
+        public static Excel.Application FindExcelApplication(Settings.PasteProcessInfo info)
         {
-            Excel.Application findApp = null;
-            Excel.Application.GetActiveInstances()
+            var applications = Excel.Application.GetActiveInstances();
+            var findApp = applications
                 .ToList()
-                .ForEach((app) =>
-                {
-                    if (app.Hinstance == Hinstance && app.Hwnd == Hwnd)
-                    {
-                        findApp = app;
-                    }
-                    else
-                    {
-                        app.Dispose();
-                    }
-                });
+                .First((app) => FindExcelWorkbook(app, info) != null);
+
+            // 合致しなかったExcelApplicationを破棄します
+            applications
+                .Where((app) => !ReferenceEquals(app, findApp))
+                .ToList()
+                .ForEach((app) => app.Dispose());
+
             return findApp;
         }
 
@@ -79,33 +75,19 @@ namespace imageClipPaste.Models.Office
         /// 引数に合致するExcelワークブックを取得します
         /// </summary>
         /// <param name="app">取得先のExcelアプリケーション</param>
-        /// <param name="name">ワークブックの名前</param>
+        /// <param name="info">ワークブックを特定する情報</param>
         /// <returns>
         /// 合致するワークブックが取得できる場合は、取得したワークブックを、
         /// 取得できない場合はnullを返却します
         /// </returns>
-        public static Excel.Workbook FindExcelWorkbook(Excel.Application app, string name)
+        public static Excel.Workbook FindExcelWorkbook(Excel.Application app, Settings.PasteProcessInfo info)
         {
-            if (app == null)
-                return null;
-
-            Excel.Workbook findBook = null;
-
-            app.Workbooks
+            return app.Workbooks
                 .ToList()
-                .ForEach((book) =>
-                {
-                    if (book.Name == name)
-                    {
-                        findBook = book;
-                    }
-                    else
-                    {
-                        book.Dispose();
-                    }
-                });
+                .First((b) => b.FullName == info.FullName);
 
-            return findBook;
+            // app.Workbooksで参照したWorkbookはここで破棄しません
+            // 呼び出し元でapp.Dispose()時に、子要素のDispose()が呼ばれるはず
         }
 
         /// <summary>
@@ -121,21 +103,19 @@ namespace imageClipPaste.Models.Office
                 applications = Excel.Application.GetActiveInstances();
                 applications
                     .SelectMany(app => app.Workbooks)
-                    .ToList()
                     .Where(book => !book.ReadOnly)
                     .ToList()
                     .ForEach(book =>
                         result.Add(new Settings.PasteProcessInfo
                         {
                             Name = book.Name,
-                            HInstance = book.Application.Hinstance,
-                            HWnd = book.Application.Hwnd,
+                            FullName = book.FullName,
                             PasteType = PasteType.Excel
                         }));
 
-                foreach (var app in applications)
-                    app.Dispose();
-
+                applications
+                    .ToList()
+                    .ForEach(app => app.Dispose());
             }
             catch (Exception ex)
             {
