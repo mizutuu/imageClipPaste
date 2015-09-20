@@ -58,9 +58,19 @@ namespace imageClipPaste.ViewModel
         public PasteProcessSelectViewModel()
         {
             var list = new List<Settings.PasteProcessInfo>();
-            list.Add(GetNew(PasteType.Excel));
-            //list.Add(GetNew(PasteType.PowerPoint)); // TODO:
-            list.AddRange(GetPasteProcessList(PasteType.Excel));
+            var isInstalledExcel = ExcelModel.IsInstalledExcel();
+            var isInstalledPowerPoint = PowerPointModel.IsInstalled();
+
+            if (isInstalledExcel)
+                list.Add(GetNew(PasteType.Excel));
+            if (isInstalledPowerPoint)
+                list.Add(GetNew(PasteType.PowerPoint));
+
+            if (isInstalledExcel)
+                list.AddRange(ExcelModel.GetPasteExcelProcessList());
+            if (isInstalledPowerPoint)
+                list.AddRange(PowerPointModel.GetPasteProcessList());
+
             ProcessSource = new ObservableCollection<Settings.PasteProcessInfo>(list);
             IsResetClipboard = Properties.Settings.Default.Setting.IsResetClipboard;
         }
@@ -95,25 +105,6 @@ namespace imageClipPaste.ViewModel
                 default:
                     throw new NotImplementedException("not supported.");
             }
-        }
-
-        public List<Settings.PasteProcessInfo> GetPasteProcessList(PasteType pasteType)
-        {
-            switch (pasteType)
-            {
-                case PasteType.Excel:
-                    return ExcelModel.GetPasteExcelProcessList();
-                case PasteType.PowerPoint:
-                    return GetPastePowerPointList();
-                default:
-                    throw new NotImplementedException("not supported.");
-            }
-        }
-
-        public List<Settings.PasteProcessInfo> GetPastePowerPointList()
-        {
-            // TODO:
-            throw new NotImplementedException();
         }
     }
 }
