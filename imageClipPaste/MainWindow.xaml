@@ -8,7 +8,9 @@
     xmlns:local="clr-namespace:imageClipPaste"
     xmlns:enum="clr-namespace:imageClipPaste.Enums"
     mc:Ignorable="d"
-    Title="imageClipPaste" Height="142.2" Width="352"
+    Height="142.2" Width="352"
+    Title="{Binding WindowTitle}"
+    TitleCaps="{Binding IsEnableMonitor, Converter={StaticResource InvertBoolConverter}}"
     BorderBrush="{DynamicResource AccentColorBrush}"
     BorderThickness="1" ResizeMode="CanMinimize"
     DataContext="{Binding Main, Source={StaticResource Locator}}">

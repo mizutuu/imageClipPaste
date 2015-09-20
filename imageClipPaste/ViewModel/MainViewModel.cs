@@ -45,6 +45,16 @@ namespace imageClipPaste.ViewModel
             get { return capturedImage; }
             set { Set(ref capturedImage, value); }
         }
+
+        /// <summary>
+        /// ウィンドウタイトル
+        /// </summary>
+        private string windowTitle;
+        public string WindowTitle
+        {
+            get { return windowTitle; }
+            set { Set(ref windowTitle, value); }
+        }
         #endregion
 
         #region Commands
@@ -85,6 +95,8 @@ namespace imageClipPaste.ViewModel
         }
         #endregion
 
+        private const string DefaultWindowTitle = "imageClipPaste";
+
         /// <summary>クリップボードの画像を監視するサービス</summary>
         private IImageMonitor _clipboardMonitorService;
 
@@ -104,6 +116,8 @@ namespace imageClipPaste.ViewModel
         {
             var interval = TimeSpan.FromMilliseconds(
                 Properties.Settings.Default.Setting.ClipboardMonitorIntervalMilliseconds);
+
+            WindowTitle = DefaultWindowTitle;
 
             // クリップボード監視サービスを初期化する
             _clipboardMonitorService = clipboardMonitor;
@@ -178,11 +192,15 @@ namespace imageClipPaste.ViewModel
         {
             if (IsEnableMonitor)
             {
+                // 監視サービス周りを停止します
                 _processMonitorTimer.Stop();
                 _clipboardMonitorService.Stop();
+
+                // 後始末
                 CleanupImagePaste();
                 CapturedImage = null;
                 PasteType = PasteType.NoSelect;
+                WindowTitle = DefaultWindowTitle;
             }
             else
             {
@@ -195,6 +213,7 @@ namespace imageClipPaste.ViewModel
                     return;
 
                 PasteType = Properties.Settings.Default.Setting.CurrentPasteProcessInfo.PasteType;
+                WindowTitle = Properties.Settings.Default.Setting.CurrentPasteProcessInfo.Name;
 
                 // 貼り付け処理を実行するインスタンスを取得し、
                 // クリップボードの監視を開始します
