@@ -43,6 +43,7 @@
             <!-- Custom Converters -->
             <converter:EnumDescriptionConverter x:Key="EnumDescriptionConverter" />
             <converter:AndBooleanMultiValueConverter x:Key="AndBooleanMultiValueConverter" />
+            <converter:InvertBoolConverter x:Key="InvertBoolConverter" />
             
             <!-- Custom Commands -->
             <command:CloseWindowCommand x:Key="CloseWindowCommand" />
