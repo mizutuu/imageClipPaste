@@ -5,6 +5,7 @@ namespace imageClipPaste.Models.Paste
     /// <summary>
     /// 貼り付け先プロセスが見つからないときのException
     /// </summary>
+    [Serializable]
     public class PasteProcessNotFoundException : Exception
     {
         public PasteProcessNotFoundException()

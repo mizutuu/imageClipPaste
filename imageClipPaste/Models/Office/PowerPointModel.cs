@@ -120,7 +120,7 @@ namespace imageClipPaste.Models.Office
             }
             catch (Exception ex)
             {
-                _logger.Error("GetPasteProcessList: ", ex);
+                _logger.Error(ex, "GetPasteProcessList: ");
             }
 
             return result;

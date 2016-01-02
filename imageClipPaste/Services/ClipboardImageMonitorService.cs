@@ -134,7 +134,7 @@ namespace imageClipPaste.Services
                 }
                 catch (Exception ex)
                 {
-                    logger.Error("監視タスク中に例外が発生しました。", ex);
+                    logger.Error(ex, "監視タスク中に例外が発生しました。");
                     throw;
                 }
             });
