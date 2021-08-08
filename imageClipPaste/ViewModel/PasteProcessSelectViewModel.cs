@@ -59,17 +59,12 @@ namespace imageClipPaste.ViewModel
         {
             var list = new List<Settings.PasteProcessInfo>();
             var isInstalledExcel = ExcelModel.IsInstalledExcel();
-            var isInstalledPowerPoint = PowerPointModel.IsInstalled();
 
             if (isInstalledExcel)
                 list.Add(GetNew(PasteType.Excel));
-            if (isInstalledPowerPoint)
-                list.Add(GetNew(PasteType.PowerPoint));
 
             if (isInstalledExcel)
                 list.AddRange(ExcelModel.GetPasteExcelProcessList());
-            if (isInstalledPowerPoint)
-                list.AddRange(PowerPointModel.GetPasteProcessList());
 
             ProcessSource = new ObservableCollection<Settings.PasteProcessInfo>(list);
             IsResetClipboard = Properties.Settings.Default.Setting.IsResetClipboard;
@@ -94,13 +89,6 @@ namespace imageClipPaste.ViewModel
                         IsRequiredNew = true,
                         Name = "新しいワークブック",
                         PasteType = PasteType.Excel
-                    };
-                case PasteType.PowerPoint:
-                    return new Settings.PasteProcessInfo
-                    {
-                        IsRequiredNew = true,
-                        Name = "新しいプレゼンテーション",
-                        PasteType = PasteType.PowerPoint
                     };
                 default:
                     throw new NotImplementedException("not supported.");
