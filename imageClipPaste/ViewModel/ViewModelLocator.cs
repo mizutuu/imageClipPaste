@@ -17,7 +17,7 @@ using GalaSoft.MvvmLight.Ioc;
 using imageClipPaste.Interfaces;
 using imageClipPaste.Services;
 using imageClipPaste.Views.Dialog;
-using Microsoft.Practices.ServiceLocation;
+using CommonServiceLocator;
 
 namespace imageClipPaste.ViewModel
 {
@@ -96,7 +96,7 @@ namespace imageClipPaste.ViewModel
                 return ServiceLocator.Current.GetInstance<ApplicationSettingViewModel>();
             }
         }
-        
+
         /// <summary>
         /// アプリケーションに紐づくViewModelを破棄します
         /// </summary>

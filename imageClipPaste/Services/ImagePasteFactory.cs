@@ -25,8 +25,6 @@ namespace imageClipPaste.Services
             {
                 case PasteType.Excel:
                     return new ImagePasteExcel(setting.CurrentPasteProcessInfo, setting.ExcelSetting);
-                case PasteType.PowerPoint:
-                    return new ImagePastePowerPoint(setting.CurrentPasteProcessInfo, setting.PowerPointSetting);
                 default:
                     throw new NotImplementedException("not supported.");
             }
