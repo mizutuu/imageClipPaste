@@ -97,25 +97,23 @@ namespace imageClipPaste.Models.Office
         public static List<Settings.PasteProcessInfo> GetPasteExcelProcessList()
         {
             List<Settings.PasteProcessInfo> result = new List<Settings.PasteProcessInfo>();
-            Excel.Application[] applications = null;
             try
             {
-                applications = Excel.Application.GetActiveInstances();
-                applications
-                    .SelectMany(app => app.Workbooks)
-                    .Where(book => !book.ReadOnly)
-                    .ToList()
-                    .ForEach(book =>
-                        result.Add(new Settings.PasteProcessInfo
+                using (NetOffice.CollectionsGeneric.IDisposableSequence<Excel.Application> applications = Excel.Application.GetActiveInstances())
+                {
+                    result = applications
+                        .SelectMany(app => app.Workbooks)
+                        .Where(book => !book.ReadOnly)
+                        .Select(book => new Settings.PasteProcessInfo
                         {
                             Name = book.Name,
                             FullName = book.FullName,
                             PasteType = PasteType.Excel
-                        }));
-
-                applications
-                    .ToList()
-                    .ForEach(app => app.Dispose());
+                        })
+                        // 同じプロセスなのに Excel.Application.GetActiveInstances() の結果が2回返るため、重複するWorkBookを除去する
+                        .Distinct(new PasteProcessInfoFullNameEqualityComparer())
+                        .ToList();
+                }
             }
             catch (Exception ex)
             {
@@ -163,6 +161,19 @@ namespace imageClipPaste.Models.Office
             shape.ScaleWidth(1, NetOffice.OfficeApi.Enums.MsoTriState.msoTrue);
 
             return shape;
+        }
+    }
+
+    public class PasteProcessInfoFullNameEqualityComparer : IEqualityComparer<Settings.PasteProcessInfo>
+    {
+        public bool Equals(Settings.PasteProcessInfo x, Settings.PasteProcessInfo y)
+        {
+            return x.FullName == y.FullName;
+        }
+
+        public int GetHashCode(Settings.PasteProcessInfo obj)
+        {
+            return obj.FullName.GetHashCode();
         }
     }
 }
