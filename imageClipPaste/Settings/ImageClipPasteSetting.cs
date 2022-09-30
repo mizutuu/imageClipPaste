@@ -19,6 +19,11 @@ namespace imageClipPaste.Settings
         public int ClipboardMonitorIntervalMilliseconds { get; set; }
 
         /// <summary>
+        /// クリップボードから画像をコピーするときに、自動変換可能な画像をコピーする
+        /// </summary>
+        public bool IsClipAutoConvertibleImage { get; set; }
+
+        /// <summary>
         /// 貼り付け先のプロセス情報
         /// </summary>
         public PasteProcessInfo CurrentPasteProcessInfo { get; set; }
@@ -44,6 +49,7 @@ namespace imageClipPaste.Settings
         public ImageClipPasteSetting()
         {
             ClipboardMonitorIntervalMilliseconds = 200;
+            IsClipAutoConvertibleImage = true;
             CurrentPasteProcessInfo = new PasteProcessInfo();
             IsResetClipboard = true;
             ExcelSetting = new PasteExcelSetting();
