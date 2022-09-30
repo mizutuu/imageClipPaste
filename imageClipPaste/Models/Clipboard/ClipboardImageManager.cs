@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Media.Imaging;
 
 namespace imageClipPaste.Models.Clipboard
@@ -19,6 +20,11 @@ namespace imageClipPaste.Models.Clipboard
 
         /// <summary>クリップボードから取得した画像が前回と同じだった場合にフィルタするかを設定します</summary>
         public bool FilterSameImage { get; set; }
+
+        /// <summary>
+        /// クリップボードから画像をコピーするときに、自動変換可能な画像をコピーするか
+        /// </summary>
+        public bool IsClipAutoConvertibleImage { get; set; }
 
         /// <summary>
         /// コンストラクタ
@@ -40,6 +46,15 @@ namespace imageClipPaste.Models.Clipboard
         {
             if (!System.Windows.Clipboard.ContainsImage())
                 return null;
+
+            if (!IsClipAutoConvertibleImage)
+            {
+                // デバイスに依存しないビットマップ (DIB) データ形式が存在しているか
+                var dataObject = System.Windows.Clipboard.GetDataObject();
+                var containDib = dataObject != null && dataObject.GetFormats(false).Any(format => format == DataFormats.Dib);
+                if (!containDib)
+                    return null;
+            }
 
             // クリップボードのデータを取得する
             BitmapSource clipboardImage;

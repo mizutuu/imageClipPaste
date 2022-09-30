@@ -20,6 +20,16 @@ namespace imageClipPaste.ViewModel
         }
 
         /// <summary>
+        /// クリップボードから画像をコピーするときに、自動変換可能な画像をコピーする
+        /// </summary>
+        private bool isClipAutoConvertibleImage;
+        public bool IsClipAutoConvertibleImage
+        {
+            get { return isClipAutoConvertibleImage; }
+            set { Set(ref isClipAutoConvertibleImage, value); }
+        }
+
+        /// <summary>
         /// Excel貼り付け設定
         /// </summary>
         private Settings.PasteExcelSetting excelSetting;
@@ -44,6 +54,7 @@ namespace imageClipPaste.ViewModel
                     // アプリケーション設定を、Settingsオブジェクトに設定します
                     Properties.Settings.Default.Setting.ClipboardMonitorIntervalMilliseconds = 
                         IntervalMilliseconds;
+                    Properties.Settings.Default.Setting.IsClipAutoConvertibleImage = IsClipAutoConvertibleImage;
                     Properties.Settings.Default.Setting.ExcelSetting = ExcelSetting;
 
                     Properties.Settings.Default.Save();
@@ -60,6 +71,7 @@ namespace imageClipPaste.ViewModel
             // アプリケーションの設定を読み込む
             IntervalMilliseconds = 
                 Properties.Settings.Default.Setting.ClipboardMonitorIntervalMilliseconds;
+            IsClipAutoConvertibleImage = Properties.Settings.Default.Setting.IsClipAutoConvertibleImage;
             ExcelSetting =
                 Properties.Settings.Default.Setting.ExcelSetting;
         }
