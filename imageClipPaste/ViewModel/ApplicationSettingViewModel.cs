@@ -30,13 +30,13 @@ namespace imageClipPaste.ViewModel
         }
 
         /// <summary>
-        /// Excel貼り付け設定
+        /// 画像を貼り付けたあとで、アクティブなセルを画像の下に移動するか
         /// </summary>
-        private Settings.PasteExcelSetting excelSetting;
-        public Settings.PasteExcelSetting ExcelSetting
+        private bool moveActiveCellInImageBelow;
+        public bool MoveActiveCellInImageBelow
         {
-            get { return excelSetting; }
-            set { Set(ref excelSetting, value); }
+            get { return moveActiveCellInImageBelow; }
+            set { Set(ref moveActiveCellInImageBelow, value); }
         }
         #endregion
 
@@ -55,9 +55,25 @@ namespace imageClipPaste.ViewModel
                     Properties.Settings.Default.Setting.ClipboardMonitorIntervalMilliseconds = 
                         IntervalMilliseconds;
                     Properties.Settings.Default.Setting.IsClipAutoConvertibleImage = IsClipAutoConvertibleImage;
-                    Properties.Settings.Default.Setting.ExcelSetting = ExcelSetting;
+                    Properties.Settings.Default.Setting.ExcelSetting.MoveActiveCellInImageBelow = MoveActiveCellInImageBelow;
 
                     Properties.Settings.Default.Save();
+                });
+            }
+        }
+
+        /// <summary>
+        /// OKボタンコマンド
+        /// </summary>
+        private RelayCommand onWindowClosing;
+        public RelayCommand OnWindowClosing
+        {
+            get
+            {
+                return onWindowClosing = onWindowClosing ?? new RelayCommand(() =>
+                {
+                    // ウィンドウを閉じるときにViewModalをリセットする
+                    LoadApplicationSettings();
                 });
             }
         }
@@ -68,12 +84,19 @@ namespace imageClipPaste.ViewModel
         /// </summary>
         public ApplicationSettingViewModel()
         {
-            // アプリケーションの設定を読み込む
-            IntervalMilliseconds = 
+            LoadApplicationSettings();
+        }
+
+        /// <summary>
+        /// アプリケーションの設定を読み込む
+        /// </summary>
+        private void LoadApplicationSettings()
+        {
+            IntervalMilliseconds =
                 Properties.Settings.Default.Setting.ClipboardMonitorIntervalMilliseconds;
             IsClipAutoConvertibleImage = Properties.Settings.Default.Setting.IsClipAutoConvertibleImage;
-            ExcelSetting =
-                Properties.Settings.Default.Setting.ExcelSetting;
+            MoveActiveCellInImageBelow =
+                Properties.Settings.Default.Setting.ExcelSetting.MoveActiveCellInImageBelow;
         }
 
         /// <summary>
