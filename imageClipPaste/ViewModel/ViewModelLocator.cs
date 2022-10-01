@@ -110,12 +110,8 @@ namespace imageClipPaste.ViewModel
             CleanupPasteProcessSelect();
             CleanupApplicationSetting();
 
-
-            if (SimpleIoc.Default.IsRegistered<MainWindow>())
-            {
-                SimpleIoc.Default.GetInstance<MainViewModel>().Cleanup();
-                SimpleIoc.Default.Unregister<MainViewModel>();
-            }
+            SimpleIoc.Default.GetInstance<MainViewModel>().Cleanup();
+            SimpleIoc.Default.Unregister<MainViewModel>();
         }
 
         /// <summary>
