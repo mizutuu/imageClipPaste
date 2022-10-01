@@ -12,7 +12,13 @@
     ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterOwner"
     Title="オプション" Height="300" Width="320"
     DataContext="{Binding ApplicationSetting, Source={StaticResource Locator}}" SizeToContent="Height">
-    
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Closing">
+            <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.OnWindowClosing}" CommandParameter="{Binding}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
     <Window.Resources>
         <!--
         <ObjectDataProvider x:Key="PasteTypeProvider" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
@@ -61,7 +67,7 @@
 
         <Label Content="Excelへの貼り付け" Style="{StaticResource HeaderLabelStyle}" />
         <StackPanel Margin="15, 5, 0, 0">
-            <CheckBox Content="貼り付け後、アクティブセルを画像の下に移動する" IsChecked="{Binding ExcelSetting.MoveActiveCellInImageBelow}" />
+            <CheckBox Content="貼り付け後、アクティブセルを画像の下に移動する" IsChecked="{Binding MoveActiveCellInImageBelow}" />
         </StackPanel>
         
         <Separator Opacity="0" Height="20"/>
