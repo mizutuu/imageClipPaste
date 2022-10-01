@@ -21,6 +21,11 @@ namespace imageClipPaste.Interfaces
         /// <summary>監視間隔</summary>
         TimeSpan Interval { get; set; }
 
+        /// <summary>
+        /// クリップボードから画像をコピーするときに、自動変換可能な画像をコピーするか
+        /// </summary>
+        bool IsClipAutoConvertibleImage { get; set; }
+
         /// <summary>前回と同じ画像の通知をフィルタするかを設定します</summary>
         bool FilterSameImage { get; set; }
 

@@ -23,6 +23,11 @@ namespace imageClipPaste.Services
         /// <summary>監視間隔</summary>
         public TimeSpan Interval { get; set; }
 
+        /// <summary>
+        /// クリップボードから画像をコピーするときに、自動変換可能な画像をコピーするか
+        /// </summary>
+        public bool IsClipAutoConvertibleImage { get; set; }
+
         /// <summary>クリップボードから取得した画像が前回と同じだった場合にフィルタするかを設定します</summary>
         public bool FilterSameImage { get; set; }
 
@@ -37,6 +42,7 @@ namespace imageClipPaste.Services
             IsEnabled = false;
             FilterSameImage = true;
             Interval = TimeSpan.FromMilliseconds(1000);
+            IsClipAutoConvertibleImage = true;
         }
 
         /// <summary>

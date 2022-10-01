@@ -12,7 +12,13 @@
     ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterOwner"
     Title="オプション" Height="300" Width="320"
     DataContext="{Binding ApplicationSetting, Source={StaticResource Locator}}" SizeToContent="Height">
-    
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Closing">
+            <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.OnWindowClosing}" CommandParameter="{Binding}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
     <Window.Resources>
         <!--
         <ObjectDataProvider x:Key="PasteTypeProvider" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
@@ -48,26 +54,20 @@
                     TickPlacement="BottomRight" AutoToolTipPlacement="TopLeft"/>
             <TextBlock Grid.Row="0" Grid.Column="1" VerticalAlignment="Center"
                    Text="{Binding IntervalMilliseconds, Mode=OneWay}" IsHitTestVisible="False" />
-            
-            <!--
-            <Label Grid.Row="1" Grid.Column="0" VerticalContentAlignment="Center" Content="画像の貼り付け先: " />
-            <ComboBox Grid.Row="1" Grid.Column="1" Height="30"
-                            ItemsSource="{Binding Source={StaticResource PasteTypeProvider}}"
-                            SelectedItem="{Binding PasteType}">
-                <ComboBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding Converter={StaticResource EnumDescriptionConverter}}"/>
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>
-            -->
         </Grid>
+
+        <StackPanel Margin="15, 5, 0, 0">
+            <CheckBox Content="画像に変換可能なデータもコピーする" IsChecked="{Binding IsClipAutoConvertibleImage}" />
+            <TextBlock TextWrapping="Wrap" Margin="25, 0, 0, 0" Padding="0">
+                Excelのセルをコピーしたときなど、画像に変換可能なオブジェクトもコピーされます。
+            </TextBlock>
+        </StackPanel>
 
         <Separator Opacity="0" Height="10"/>
 
         <Label Content="Excelへの貼り付け" Style="{StaticResource HeaderLabelStyle}" />
         <StackPanel Margin="15, 5, 0, 0">
-            <CheckBox Content="貼り付け後、アクティブセルを画像の下に移動する" IsChecked="{Binding ExcelSetting.MoveActiveCellInImageBelow}" />
+            <CheckBox Content="貼り付け後、アクティブセルを画像の下に移動する" IsChecked="{Binding MoveActiveCellInImageBelow}" />
         </StackPanel>
         
         <Separator Opacity="0" Height="20"/>

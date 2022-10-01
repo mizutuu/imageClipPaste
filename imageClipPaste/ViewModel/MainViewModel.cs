@@ -89,6 +89,7 @@ namespace imageClipPaste.ViewModel
                     var interval = TimeSpan.FromMilliseconds(
                         Properties.Settings.Default.Setting.ClipboardMonitorIntervalMilliseconds);
                     _clipboardMonitorService.Interval = interval;
+                    _clipboardMonitorService.IsClipAutoConvertibleImage = Properties.Settings.Default.Setting.IsClipAutoConvertibleImage;
                     _processMonitorTimer.Interval = interval;
                 }, () => { return !IsEnableMonitor; });
             }
@@ -116,12 +117,14 @@ namespace imageClipPaste.ViewModel
         {
             var interval = TimeSpan.FromMilliseconds(
                 Properties.Settings.Default.Setting.ClipboardMonitorIntervalMilliseconds);
+            var isCaptureOnlyDib = Properties.Settings.Default.Setting.IsClipAutoConvertibleImage;
 
             WindowTitle = DefaultWindowTitle;
 
             // クリップボード監視サービスを初期化する
             _clipboardMonitorService = clipboardMonitor;
             _clipboardMonitorService.Interval = interval;
+            _clipboardMonitorService.IsClipAutoConvertibleImage = isCaptureOnlyDib;
             _clipboardMonitorService.CapturedNewerImage += imageWatcher_CapturedNewerImage;
 
             // 貼り付け先プロセスの生存確認タイマーを初期化する

@@ -103,7 +103,10 @@ namespace imageClipPaste.Services
             {
                 try
                 {
-                    var clipImageManager = new ClipboardImageManager { FilterSameImage = this.FilterSameImage };
+                    var clipImageManager = new ClipboardImageManager {
+                        FilterSameImage = this.FilterSameImage,
+                        IsClipAutoConvertibleImage = this.IsClipAutoConvertibleImage
+                    };
                     while (!cancelToken.IsCancellationRequested)
                     {
                         logger.Trace("監視周期" + " Total Memory = {0} KB", GC.GetTotalMemory(true) / 1024);

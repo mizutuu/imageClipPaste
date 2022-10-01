@@ -20,13 +20,23 @@ namespace imageClipPaste.ViewModel
         }
 
         /// <summary>
-        /// Excel貼り付け設定
+        /// クリップボードから画像をコピーするときに、自動変換可能な画像をコピーする
         /// </summary>
-        private Settings.PasteExcelSetting excelSetting;
-        public Settings.PasteExcelSetting ExcelSetting
+        private bool isClipAutoConvertibleImage;
+        public bool IsClipAutoConvertibleImage
         {
-            get { return excelSetting; }
-            set { Set(ref excelSetting, value); }
+            get { return isClipAutoConvertibleImage; }
+            set { Set(ref isClipAutoConvertibleImage, value); }
+        }
+
+        /// <summary>
+        /// 画像を貼り付けたあとで、アクティブなセルを画像の下に移動するか
+        /// </summary>
+        private bool moveActiveCellInImageBelow;
+        public bool MoveActiveCellInImageBelow
+        {
+            get { return moveActiveCellInImageBelow; }
+            set { Set(ref moveActiveCellInImageBelow, value); }
         }
         #endregion
 
@@ -44,9 +54,26 @@ namespace imageClipPaste.ViewModel
                     // アプリケーション設定を、Settingsオブジェクトに設定します
                     Properties.Settings.Default.Setting.ClipboardMonitorIntervalMilliseconds = 
                         IntervalMilliseconds;
-                    Properties.Settings.Default.Setting.ExcelSetting = ExcelSetting;
+                    Properties.Settings.Default.Setting.IsClipAutoConvertibleImage = IsClipAutoConvertibleImage;
+                    Properties.Settings.Default.Setting.ExcelSetting.MoveActiveCellInImageBelow = MoveActiveCellInImageBelow;
 
                     Properties.Settings.Default.Save();
+                });
+            }
+        }
+
+        /// <summary>
+        /// OKボタンコマンド
+        /// </summary>
+        private RelayCommand onWindowClosing;
+        public RelayCommand OnWindowClosing
+        {
+            get
+            {
+                return onWindowClosing = onWindowClosing ?? new RelayCommand(() =>
+                {
+                    // ウィンドウを閉じるときにViewModalをリセットする
+                    LoadApplicationSettings();
                 });
             }
         }
@@ -57,11 +84,19 @@ namespace imageClipPaste.ViewModel
         /// </summary>
         public ApplicationSettingViewModel()
         {
-            // アプリケーションの設定を読み込む
-            IntervalMilliseconds = 
+            LoadApplicationSettings();
+        }
+
+        /// <summary>
+        /// アプリケーションの設定を読み込む
+        /// </summary>
+        private void LoadApplicationSettings()
+        {
+            IntervalMilliseconds =
                 Properties.Settings.Default.Setting.ClipboardMonitorIntervalMilliseconds;
-            ExcelSetting =
-                Properties.Settings.Default.Setting.ExcelSetting;
+            IsClipAutoConvertibleImage = Properties.Settings.Default.Setting.IsClipAutoConvertibleImage;
+            MoveActiveCellInImageBelow =
+                Properties.Settings.Default.Setting.ExcelSetting.MoveActiveCellInImageBelow;
         }
 
         /// <summary>
